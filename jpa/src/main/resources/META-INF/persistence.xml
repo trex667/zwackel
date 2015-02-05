@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
+    version="2.1">
+    <persistence-unit name="zwackel">
+
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+
+
+
+        <shared-cache-mode>ENABLE_SELECTIVE</shared-cache-mode>
+
+        <properties>
+            <!-- Connection-Parameter -->
+            <property name="javax.persistence.jdbc.driver" value="org.h2.Driver" />
+            <property name="javax.persistence.jdbc.url" value="jdbc:h2:~/h2/zwackel;AUTO_SERVER=TRUE" />
+<!--             <property name="javax.persistence.jdbc.url" value="jdbc:h2:mem:zwackel" /> -->
+            <property name="javax.persistence.jdbc.user" value="zwackel" />
+            <property name="javax.persistence.jdbc.password" value="z" />
+
+<!--             <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect" /> -->
+            <property name="hibernate.hbm2ddl.auto" value="update" />
+            <property name="hibernate.show_sql" value="true" />
+
+<!-- <property name="openjpa.Log" value="log4j" /> -->
+<!--       <property name="openjpa.ConnectionFactoryProperties" value="PrintParameters=true, PrettyPrint=true, PrettyPrintLineLength=72" /> -->
+            <!-- Hibernate: For SQL logging set the log categories org.hibernate.SQL und org.hibernate.type.descriptor.sql.BasicBinder 
+                to TRACE -->
+            <!-- OpenJPA: For SQL logging set the log category log4j.category.openjpa.jdbc.SQL to TRACE -->
+<!--             <property name="openjpa.Log" value="log4j" /> -->
+<!--             <property name="openjpa.ConnectionFactoryProperties" value="PrintParameters=true, PrettyPrint=true, PrettyPrintLineLength=72" /> -->
+
+            <!-- Hibernate: Use new id generator -->
+<!--             <property name="hibernate.id.new_generator_mappings" value="true" /> -->
+
+            <!-- Hibernate: Ignore discriminator column for joined inheritance -->
+            <!-- <property name="hibernate.discriminator.ignore_explicit_for_joined" value="true" /> -->
+
+            <!-- Hibernate: Enable second level cache -->
+<!--             <property name="hibernate.cache.region.factory_class" value="org.hibernate.cache.ehcache.EhCacheRegionFactory" /> -->
+<!--             <property name="hibernate.cache.use_second_level_cache" value="true" /> -->
+<!--             <property name="hibernate.cache.use_query_cache" value="true" /> -->
+
+            <!-- Hibernate: Set default batch size for associations -->
+            <!-- <property name="hibernate.default_batch_fetch_size" value="8"/> -->
+        </properties>
+    </persistence-unit>
+</persistence>
