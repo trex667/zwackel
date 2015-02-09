@@ -2,9 +2,13 @@ package org.zwackel.jpa.entity;
 
 import javax.persistence.*;
 
-@Embeddable
+@Entity
 @Access(AccessType.FIELD)
 public class Accessibility {
+    @Id
+    @GeneratedValue(strategy = GenerationType.TABLE)
+    private Integer id;
+    @Enumerated(EnumType.STRING)
     private AccessibilityType type;
     private String value;
     public AccessibilityType getType() {

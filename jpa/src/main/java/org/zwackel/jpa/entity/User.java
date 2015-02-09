@@ -16,10 +16,10 @@ public class User {
     private String firstName;
     private String lastName;
     private Date birthdate;
+    @OneToMany
+    private Collection<Accessibility> accessibilities;
     @Embedded
-    private List<Accessibility> accessibilities = new ArrayList<Accessibility>();
-    @Embedded
-    private Accessibility email;
+    private Address address;
 
     public void setId(int id) {
         this.id = id;
@@ -92,11 +92,14 @@ public class User {
         return shortName;
     }
 
-    public List<Accessibility> getAccessibilities() {
+    public Collection<Accessibility> getAccessibilities() {
         return accessibilities;
     }
 
     public void addAccessibility(Accessibility accessibility) {
+        if (accessibilities == null) {
+            accessibilities = new ArrayList<Accessibility>();
+        }
         accessibilities.add(accessibility);
     }
 
@@ -104,12 +107,12 @@ public class User {
         this.id = id;
     }
 
-    public Accessibility getEmail() {
-        return email;
+    public Address getAddress() {
+        return address;
     }
 
-    public void setEmail(Accessibility email) {
-        this.email = email;
+    public void setAddress(Address address) {
+        this.address = address;
     }
 
 }

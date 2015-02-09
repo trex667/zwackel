@@ -77,9 +77,27 @@ public class UserTest extends TestBase {
         user.setFirstName("Petrosilius");
         user.setLastName("Zwackelmann");
         user.setBirthdate(DateUtils.parseDate("14.12.1969", "dd.mm.yyyy"));
-        user.setEmail(getEmailAccessibility());
         
+        Address address = new Address();
+        address.setCity("Trier");
+        address.setStreet("Monaiser Straﬂe 11");
+        address.setZipCode("54294");
+        user.setAddress(address);
+        
+        Accessibility email = new Accessibility();
+        email.setType(AccessibilityType.email);
+        email.setValue("petrosilius.zwackelmann@blub.de");
+        user.addAccessibility(email);
+        
+        Accessibility mobile = new Accessibility();
+        mobile.setType(AccessibilityType.mobilePhone);
+        mobile.setValue("+49 1511 1234567");
+        user.addAccessibility(mobile);
+        
+        entityManager.persist(mobile);
+        entityManager.persist(email);
         entityManager.persist(user);
+
         LOG.debug("nach dem persist: " + user);
         assertThat(user.getId(), is(not(equalTo(0))));
         

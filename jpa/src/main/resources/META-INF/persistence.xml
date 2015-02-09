@@ -13,9 +13,8 @@
         <properties>
             <!-- Connection-Parameter -->
             <property name="javax.persistence.jdbc.driver" value="org.h2.Driver" />
-            <property name="javax.persistence.jdbc.url" value="jdbc:h2:~/h2/zwackel;AUTO_SERVER=TRUE" />
-<!--             <property name="javax.persistence.jdbc.url" value="jdbc:h2:~/h2/zwackel" /> -->
-<!--             <property name="javax.persistence.jdbc.url" value="jdbc:h2:mem:zwackel" /> -->
+<!--             <property name="javax.persistence.jdbc.url" value="jdbc:h2:~/h2/zwackel;AUTO_SERVER=TRUE" /> -->
+            <property name="javax.persistence.jdbc.url" value="jdbc:h2:mem:zwackel" />
             <property name="javax.persistence.jdbc.user" value="zwackel" />
             <property name="javax.persistence.jdbc.password" value="z" />
 
