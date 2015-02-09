@@ -15,11 +15,15 @@ public class User {
     private String shortName;
     private String firstName;
     private String lastName;
+    @Temporal(TemporalType.DATE)
     private Date birthdate;
     @OneToMany
     private Collection<Accessibility> accessibilities;
     @Embedded
     private Address address;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    private Collection<String> skills;
 
     public void setId(int id) {
         this.id = id;
@@ -113,6 +117,17 @@ public class User {
 
     public void setAddress(Address address) {
         this.address = address;
+    }
+
+    public Collection<String> getSkills() {
+        return skills;
+    }
+
+    public void addSkill(String skill) {
+        if (skills == null) {
+            skills = new ArrayList<String>();
+        }
+        skills.add(skill);
     }
 
 }

@@ -30,15 +30,15 @@ public class UserTest extends TestBase {
     public void testEqualsWithNullId() throws Exception {
         User user = new User();
         user.setId(42);
-        
+
         User anOtherUser = new User();
-        
+
         assertThat(user, is(not(equalTo(anOtherUser))));
         assertThat(anOtherUser, is(not(equalTo(user))));
-        
+
         assertThat(anOtherUser, is(equalTo(new User())));
     }
-    
+
     @Test
     public void thatThatToStringIncludesIdAndShortName() throws Exception {
         User user = new User();
@@ -46,29 +46,30 @@ public class UserTest extends TestBase {
         user.setId(id);
         String shortName = RandomStringUtils.randomAlphanumeric(20);
         user.setShortName(shortName);
-        
+
         assertThat(user.toString(), containsString(Integer.toString(id)));
         assertThat(user.toString(), containsString(shortName));
     }
-    
+
     @Test
     public void createUser_generateIDautomatically_isSetInTheEntityFromTheEntityManagerPersist() throws Exception {
         User user = new User();
         String shortName = RandomStringUtils.randomAlphanumeric(20);
         user.setShortName(shortName);
-        
+
         LOG.debug("vor dem persist: " + user);
-        // das eigentliche insert des users wird erst beim commit der Transaktion gemacht. Hier also in der after() methode!
+        // das eigentliche insert des users wird erst beim commit der
+        // Transaktion gemacht. Hier also in der after() methode!
         entityManager.persist(user);
         LOG.debug("nach dem persist: " + user);
         assertThat(user.getId(), is(not(equalTo(0))));
-        
+
         User userByFind = entityManager.find(User.class, user.getId());
-        
+
         assertThat(user, is(equalTo(userByFind)));
-        
+
     }
-    
+
     @Test
     public void createUserWithAllAttributes() throws Exception {
         User user = new User();
@@ -77,40 +78,36 @@ public class UserTest extends TestBase {
         user.setFirstName("Petrosilius");
         user.setLastName("Zwackelmann");
         user.setBirthdate(DateUtils.parseDate("14.12.1969", "dd.mm.yyyy"));
-        
+
         Address address = new Address();
         address.setCity("Trier");
-        address.setStreet("Monaiser Straﬂe 11");
+        address.setStreet("Monaiser Stra√üe 11");
         address.setZipCode("54294");
         user.setAddress(address);
-        
+
         Accessibility email = new Accessibility();
         email.setType(AccessibilityType.email);
         email.setValue("petrosilius.zwackelmann@blub.de");
         user.addAccessibility(email);
-        
+
         Accessibility mobile = new Accessibility();
         mobile.setType(AccessibilityType.mobilePhone);
         mobile.setValue("+49 1511 1234567");
         user.addAccessibility(mobile);
         
+        user.addSkill("jpa Guru");
+        user.addSkill("cdi beginner");
+
         entityManager.persist(mobile);
         entityManager.persist(email);
         entityManager.persist(user);
 
         LOG.debug("nach dem persist: " + user);
         assertThat(user.getId(), is(not(equalTo(0))));
-        
-        User userByFind = entityManager.find(User.class, user.getId());
-        
-        assertThat(user, is(equalTo(userByFind)));
-        
-    }
 
-    private Accessibility getEmailAccessibility() {
-        Accessibility email = new Accessibility();
-        email.setType(AccessibilityType.email);
-        email.setValue("froehlich.ch@gmail.com");
-        return email;
+        User userByFind = entityManager.find(User.class, user.getId());
+
+        assertThat(user, is(equalTo(userByFind)));
+
     }
 }
