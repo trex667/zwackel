@@ -36,4 +36,9 @@ public class HumanBeingTablePerClass extends PersonTablePerClass {
     public void setBirthdate(Date birthdate) {
         this.birthdate = birthdate;
     }
+    
+    @Override
+    public String toString() {
+        return String.format("HumanBeingTablePerClass[id=%d; firstName=%s; lastName=%s; birthDate=%s]", getId(), getFirstName(), getLastName(), getBirthdate());
+    }
 }

@@ -5,4 +5,13 @@ import javax.persistence.*;
 @Entity
 @Access(AccessType.FIELD)
 public class CompanyTablePerClass extends PersonTablePerClass {
+private String name;
+
+public String getName() {
+    return name;
+}
+
+public void setName(String name) {
+    this.name = name;
+}
 }
