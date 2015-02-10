@@ -16,4 +16,9 @@ public class CompanySingleTable extends PersonSingleTable {
     public void setName(String name) {
         this.name = name;
     }
+    
+    @Override
+    public String toString() {
+        return String.format("%s[id=%d; name=%s]", CompanySingleTable.class.getCanonicalName(), getId(), getName());
+    }
 }

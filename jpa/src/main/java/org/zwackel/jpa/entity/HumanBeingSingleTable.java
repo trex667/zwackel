@@ -37,4 +37,9 @@ public class HumanBeingSingleTable extends PersonSingleTable {
     public void setBirthdate(Date birthdate) {
         this.birthdate = birthdate;
     }
+    
+    @Override
+    public String toString() {
+        return String.format("%s[id=%d; firstName=%s; lastName=%s; birthDate=%s]", HumanBeingSingleTable.class.getCanonicalName(), getId(), getFirstName(), getLastName(), getBirthdate());
+    }
 }
