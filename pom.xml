@@ -73,6 +73,7 @@
 
     <modules>
         <module>jpa</module>
+        <module>cdi</module>
     </modules>
 
 

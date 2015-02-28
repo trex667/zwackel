@@ -1,0 +1,33 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core">
+
+<h:head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+  <title>CDI Context and Dependency Injection</title>
+</h:head>
+<h:body>
+  <h2>Demo- und Übungsprojekt zu CDI</h2>
+
+  <h:panelGrid columns="2">
+    <h:outputLink value="${request.contextPath}/demo/basics/demoPage.jsp">demo/basics/demoPage.jsp</h:outputLink>
+    Zugriff auf eine CDI Bean aus JSP heraus
+
+    <h:outputLink value="${request.contextPath}/demo/basics/demoPage.xhtml">demo/basics/demoPage.xhtml</h:outputLink>
+    Zugriff auf eine CDI Bean aus JSF heraus
+
+    <h:outputLink value="${request.contextPath}/demo/basics/scopePage.xhtml">demo/basics/scopePage.xhtml</h:outputLink>
+    Demo diverser CDI Scopes
+
+    <h:outputLink value="${request.contextPath}/demo/intercept/countryPage.xhtml">demo/intercept/countryPage.xhtml</h:outputLink>
+    Demo der Transaktionssteuerung mittels Interceptor
+
+    <h:panelGroup>
+      <hr />
+    </h:panelGroup>
+    <h:panelGroup />
+
+    <h:outputLink value="${request.contextPath}/bar/cocktailPage.xhtml">bar/cocktailPage.xhtml</h:outputLink>
+    Cocktailbestellanwendung
+
+  </h:panelGrid>
+</h:body>
+</html>
