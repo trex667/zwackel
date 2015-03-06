@@ -1,9 +1,6 @@
 package org.zwackel.jpa.entity;
 
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
-
-import java.util.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.time.DateUtils;
@@ -19,11 +16,11 @@ public class UserTest extends TestBase {
         User anOtherUser = new User();
         anOtherUser.setId(42);
 
-        assertNotEquals(user, new Object());
-        assertNotEquals(user, null);
-        assertEquals(user, user);
-        assertThat(user, is(equalTo(anOtherUser)));
-        assertThat(anOtherUser, is(equalTo(user)));
+        assertThat(user).isNotEqualTo(new Object());
+        assertThat(user).isNotEqualTo(null);
+        assertThat(user).isEqualTo(user);
+        assertThat(user).isEqualTo(anOtherUser);
+        assertThat(anOtherUser).isEqualTo(user);
     }
 
     @Test
@@ -33,10 +30,10 @@ public class UserTest extends TestBase {
 
         User anOtherUser = new User();
 
-        assertThat(user, is(not(equalTo(anOtherUser))));
-        assertThat(anOtherUser, is(not(equalTo(user))));
+        assertThat(user).isNotEqualTo(anOtherUser);
+        assertThat(anOtherUser).isNotEqualTo(user);
 
-        assertThat(anOtherUser, is(equalTo(new User())));
+        assertThat(anOtherUser).isEqualTo(new User());
     }
 
     @Test
@@ -47,8 +44,8 @@ public class UserTest extends TestBase {
         String shortName = RandomStringUtils.randomAlphanumeric(20);
         user.setShortName(shortName);
 
-        assertThat(user.toString(), containsString(Integer.toString(id)));
-        assertThat(user.toString(), containsString(shortName));
+        assertThat(user.toString()).contains(Integer.toString(id));
+        assertThat(user.toString()).contains(shortName);
     }
 
     @Test
@@ -62,11 +59,11 @@ public class UserTest extends TestBase {
         // Transaktion gemacht. Hier also in der after() methode!
         entityManager.persist(user);
         LOG.debug("nach dem persist: " + user);
-        assertThat(user.getId(), is(not(equalTo(0))));
+        assertThat(user.getId()).isNotEqualTo(0);
 
         User userByFind = entityManager.find(User.class, user.getId());
 
-        assertThat(user, is(equalTo(userByFind)));
+        assertThat(user).isEqualTo(userByFind);
 
     }
 
@@ -94,7 +91,7 @@ public class UserTest extends TestBase {
         mobile.setType(AccessibilityType.mobilePhone);
         mobile.setValue("+49 1511 1234567");
         user.addAccessibility(mobile);
-        
+
         user.addSkill("jpa Guru");
         user.addSkill("cdi beginner");
 
@@ -103,11 +100,11 @@ public class UserTest extends TestBase {
         entityManager.persist(user);
 
         LOG.debug("nach dem persist: " + user);
-        assertThat(user.getId(), is(not(equalTo(0))));
+        assertThat(user.getId()).isNotEqualTo(0);
 
         User userByFind = entityManager.find(User.class, user.getId());
 
-        assertThat(user, is(equalTo(userByFind)));
+        assertThat(user).isEqualTo(userByFind);
 
     }
 }

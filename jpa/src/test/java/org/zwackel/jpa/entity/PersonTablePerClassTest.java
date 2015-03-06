@@ -1,12 +1,11 @@
 package org.zwackel.jpa.entity;
 
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
 
 import org.apache.commons.lang3.time.DateUtils;
-import org.junit.*;
+import org.junit.Test;
 
 public class PersonTablePerClassTest extends TestBase {
     @Test
@@ -19,11 +18,11 @@ public class PersonTablePerClassTest extends TestBase {
         entityManager.persist(person);
 
         LOG.debug("nach dem persist: " + person);
-        assertThat(person.getId(), is(notNullValue()));
+        assertThat(person.getId()).isNotNull();
 
         HumanBeingTablePerClass personByFind = entityManager.find(HumanBeingTablePerClass.class, person.getId());
 
-        assertThat(person, is(equalTo(personByFind)));
+        assertThat(person).isEqualTo(personByFind);
     }
 
     @Test
@@ -32,20 +31,21 @@ public class PersonTablePerClassTest extends TestBase {
         company.setName("name of company");
 
         entityManager.persist(company);
-        
+
         LOG.debug("nach dem persist: " + company);
-        assertThat(company.getId(), is(notNullValue()));
-        
+        assertThat(company.getId()).isNotNull();
+
         CompanyTablePerClass companyByFind = entityManager.find(CompanyTablePerClass.class, company.getId());
-        
-        assertThat(company, is(equalTo(companyByFind)));
+
+        assertThat(company).isEqualTo(companyByFind);
     }
-    
+
     @Test
     public void queryOfAllPersons() throws Exception {
         // das geht! Hier wird ein union all über die beiden Kindsklassen gemacht
-        List<PersonTablePerClass> result = entityManager.createQuery("select p from PersonTablePerClass p", PersonTablePerClass.class).getResultList();
-        for(PersonTablePerClass element : result){
+        List<PersonTablePerClass> result = entityManager.createQuery("select p from PersonTablePerClass p",
+                PersonTablePerClass.class).getResultList();
+        for (PersonTablePerClass element : result) {
             LOG.debug(element.toString());
         }
     }

@@ -1,7 +1,6 @@
 package org.zwackel.jpa.entity;
 
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.Test;
 
@@ -13,10 +12,10 @@ public class AccessibilityTest {
         Accessibility a2 = new Accessibility();
         a2.setType(AccessibilityType.email);
 
-        assertThat(a1, is(equalTo(a1)));
-        assertThat(a1, is(equalTo(a2)));
-        assertThat(a2, is(equalTo(a1)));
+        assertThat(a1).isEqualTo(a1);
+        assertThat(a1).isEqualTo(a2);
+        assertThat(a2).isEqualTo(a1);
 
-        assertThat(new Accessibility(), is(not(equalTo(new Accessibility()))));
+        assertThat(new Accessibility()).isNotEqualTo(new Accessibility());
     }
 }
