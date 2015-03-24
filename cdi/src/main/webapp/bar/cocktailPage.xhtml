@@ -7,7 +7,12 @@
 
   <h:form>
  <h1>
-    <h:outputText value="${cocktailPresenter.barInfo.welcomeMessage}" />
+    <h:outputText value="${cocktailPresenter.greetingService.greetings}" />
+  </h1>
+  </h:form>
+  <h:form>
+ <h1>
+    <h:outputText value="${cocktailPresenter.extendedGreetingService.greetings}" />
   </h1>
   </h:form>
 </h:body>
