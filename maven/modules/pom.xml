@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+    <groupId>de.schreibvehler</groupId>
+    <artifactId>vaadin-dml</artifactId>
+    <version>1.0-SNAPSHOT</version>
+        <!--relativePath>../pom.xml</relativePath-->
+    </parent>
+
+    <artifactId>vaadin-aggregation</artifactId>
+    <packaging>pom</packaging>
+
+    <name>${project.artifactId} ${project.version}</name>
+
+    <!-- Modules *************************************************************************************************** -->
+    <modules>
+        <module>vaadin-commons</module>
+    </modules>
+
+    <!-- Properties ************************************************************************************************ -->
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <!-- Dependency Management************************************************************************************** -->
+    <dependencyManagement>
+        <dependencies>
+        </dependencies>
+    </dependencyManagement>
+
+    <!-- Build ***************************************************************************************************** -->
+    <build>
+        <plugins>
+        </plugins>
+
+        <pluginManagement>
+            <plugins>
+                <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven 
+                    build itself. -->
+                <plugin>
+                    <groupId>org.eclipse.m2e</groupId>
+                    <artifactId>lifecycle-mapping</artifactId>
+                    <version>1.0.0</version>
+                    <configuration>
+                        <lifecycleMappingMetadata>
+                            <pluginExecutions>
+                                <pluginExecution>
+                                    <pluginExecutionFilter>
+                                        <groupId>org.jacoco</groupId>
+                                        <artifactId>
+                                            jacoco-maven-plugin
+                                        </artifactId>
+                                        <versionRange>
+                                            [${version.jacoco},)
+                                        </versionRange>
+                                        <goals>
+                                            <goal>prepare-agent</goal>
+                                        </goals>
+                                    </pluginExecutionFilter>
+                                    <action>
+                                        <ignore />
+                                    </action>
+                                </pluginExecution>
+                                <pluginExecution>
+                                    <pluginExecutionFilter>
+                                        <groupId>org.apache.maven.plugins</groupId>
+                                        <artifactId>maven-dependency-plugin</artifactId>
+                                        <versionRange>[2.9,)</versionRange>
+                                        <goals>
+                                            <goal>unpack</goal>
+                                        </goals>
+                                    </pluginExecutionFilter>
+                                    <action>
+                                        <ignore />
+                                    </action>
+                                </pluginExecution>
+                            </pluginExecutions>
+                        </lifecycleMappingMetadata>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+
+    <profiles>
+        <!-- Run all JUnit tests including integration tests -->
+        <profile>
+            <id>run-integration-tests</id>
+        </profile>
+
+        <profile>
+            <id>obfuscate</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.github.wvengen</groupId>
+                        <artifactId>proguard-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>proguard</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <options>
+                                <!-- use only one of the following keep options -->
+                                <!-- obfuscate everything thats not public -->
+                                <option>-keep public class * {public *;}</option>
+
+                                <!-- keep the defined public class as entry point, all unused stuff will be removed, everything 
+                                    used will be obfuscated -->
+
+                                <!-- keep an abstract class as entry point, all unused stuff will be removed, everything 
+                                    used will be obfuscated have a look at the resulting jar with and without the -dontshrink option! -->
+                                <!--option>-dontshrink</option -->
+
+                                <!-- print the used config to console -->
+                                <option>-printconfiguration</option>
+                                <!-- do not optimize at all -->
+                                <option>-dontoptimize</option>
+                                <!-- change the name of the sourcefile, e.g. Doh instead of a real classname (will be shown 
+                                    in stack traces) -->
+                                <option>-renamesourcefileattribute Doh</option>
+                                <!-- keep the sourcefile attribute and the linenumbertable for retracing stacks -->
+                                <option>-keepattributes
+                                    SourceFile,LineNumberTable</option>
+                                <!-- use the following dictionary to replace names -->
+                                <option>-obfuscationdictionary
+                                    proguard_dictionary.txt</option>
+                                <!-- print a map for retracing -->
+                                <option>-printmapping
+                                    proguard_mapping.txt</option>
+                                <!-- package information will be removed if possible -->
+                                <option>-repackageclasses</option>
+                            </options>
+                            <libs>
+                                <lib>${java.home}/lib/rt.jar</lib>
+                            </libs>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
+</project>
