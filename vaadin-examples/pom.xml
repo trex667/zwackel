@@ -15,7 +15,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <vaadin.version>7.0.0</vaadin.version>
+        <vaadin.version>7.4.8</vaadin.version>
         <vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>
         <jetty.plugin.version>9.2.3.v20140905</jetty.plugin.version>
     </properties>
@@ -66,6 +66,17 @@
             <groupId>com.vaadin</groupId>
             <artifactId>vaadin-themes</artifactId>
             <version>${vaadin.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.vaadin</groupId>
+            <artifactId>vaadin-cdi</artifactId>
+            <version>1.0.2</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.enterprise</groupId>
+            <artifactId>cdi-api</artifactId>
+            <version>1.2</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
@@ -128,8 +139,7 @@
                     </execution>
                 </executions>
             </plugin>
-           <!-- The Jetty plugin allows us to easily test the development 
-                build by running jetty:run on the command line. -->
+            <!-- The Jetty plugin allows us to easily test the development build by running jetty:run on the command line. -->
             <plugin>
                 <groupId>org.eclipse.jetty</groupId>
                 <artifactId>jetty-maven-plugin</artifactId>

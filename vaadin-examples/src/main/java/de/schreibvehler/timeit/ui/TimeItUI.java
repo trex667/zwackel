@@ -2,7 +2,9 @@ package de.schreibvehler.timeit.ui;
 
 import java.util.Collection;
 
+import com.vaadin.data.util.ObjectProperty;
 import com.vaadin.server.*;
+import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.*;
 
 import de.schreibvehler.timeit.biz.*;
@@ -35,22 +37,20 @@ public class TimeItUI extends UI {
         }
 
         combo.addValueChangeListener((event) -> {
-                TestSet testSet = (TestSet) combo.getValue();
-                textField.setValue("" + testSet.getDefaultTimes());
-                button.setDescription("<big>" + testSet.getDescription() + "</big>");
-            }
-        );
+            TestSet testSet = (TestSet) combo.getValue();
+            textField.setValue("" + testSet.getDefaultTimes());
+            button.setDescription("<big>" + testSet.getDescription() + "</big>");
+        });
 
         combo.setImmediate(true);
     }
 
     private void initButton() {
         button.addClickListener((event) -> {
-                if (isValid()) {
-                    runSelectedTest();
-                }
+            if (isValid()) {
+                runSelectedTest();
             }
-        );
+        });
     }
 
     private void initLayout() {
@@ -62,6 +62,33 @@ public class TimeItUI extends UI {
         layout.addComponent(button);
         layout.addComponent(resultsLayout);
 
+        TextField textField = new TextField("Data");
+        textField.setImmediate(true);
+
+        Label label = new Label();
+        layout.addComponent(textField);
+        layout.addComponent(label);
+
+        ObjectProperty<String> objProp = new ObjectProperty<String>("The value");
+        textField.setPropertyDataSource(objProp);
+        label.setPropertyDataSource(objProp);
+
+        TextArea textArea = new TextArea("Text area:");
+        textArea.setImmediate(true);
+        textArea.setWordwrap(false);
+        textArea.addValueChangeListener((e) -> {
+            Notification.show(e.getProperty().getValue().toString());
+        });
+        layout.addComponent(textArea);
+
+        RichTextArea richTextArea = new RichTextArea("RichText area:");
+        richTextArea.setImmediate(true);
+        Label richTextLabel = new Label(richTextArea, ContentMode.HTML);
+        layout.addComponent(richTextArea);
+        layout.addComponent(richTextLabel);
+        
+        
+        
         setContent(layout);
     }
 
@@ -80,7 +107,7 @@ public class TimeItUI extends UI {
             textField.setComponentError(new UserError("You must introduce the number of iterations to execute"));
             isValid = false;
         }
-        
+
         try {
             Long.parseLong(textField.getValue());
         } catch (NumberFormatException e) {

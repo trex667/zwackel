@@ -1,5 +1,6 @@
 package de.schreibvehler;
 
+import com.vaadin.data.util.ObjectProperty;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.*;
@@ -31,6 +32,17 @@ public class MyVaadinUI extends UI {
             Notification.show("Button click successfully finished!");
         });
         layout.addComponent(button);
+        
+        TextField textField = new TextField("Data");
+        textField.setImmediate(true);
+        
+        Label label = new Label();
+        layout.addComponent(textField);
+        layout.addComponent(label);
+        
+        ObjectProperty<String> objProp = new ObjectProperty<String>("The value");
+        textField.setPropertyDataSource(objProp);
+        label.setPropertyDataSource(objProp);
     }
 
     private String getFunnyPhrase(String name1, String name2) {
