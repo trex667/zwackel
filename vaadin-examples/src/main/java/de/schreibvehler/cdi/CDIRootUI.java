@@ -6,7 +6,7 @@ import com.vaadin.server.VaadinRequest;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.*;
 
-@CDIUI("")
+//@CDIUI("")
 //@URLMapping("vaadin-cdi")
 public class CDIRootUI extends UI {
 
