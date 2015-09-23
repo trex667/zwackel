@@ -17,10 +17,17 @@
     </build>
 
     <dependencies>
-        <dependency>
+        <!--<dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-api</artifactId>
             <scope>provided</scope>
+        </dependency>-->
+		
+        <dependency>
+            <groupId>com.seeburger.specs</groupId>
+            <artifactId>javaee-6-spec</artifactId>
+			<version>1.0.0</version>
+            <type>pom</type>
         </dependency>
 
         <dependency>
