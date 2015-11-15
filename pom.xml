@@ -75,7 +75,7 @@
     <modules>
         <module>jpa</module>
         <module>cdi</module>
-    <module>vaadin-accounting</module>
+    <!--module>vaadin-accounting</module-->
     <module>vaadin-examples</module>
   </modules>
 
