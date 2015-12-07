@@ -28,6 +28,6 @@ public class UserService {
     }
 
     public Collection<User> findAll() {
-        return em.createQuery("SELECT u FROM User u", User.class).getResultList();
+        return em.createQuery("SELECT u FROM User u JOIN FETCH u.addresses", User.class).getResultList();
     }
 }

@@ -17,10 +17,9 @@ public class User {
     private String lastName;
     @Temporal(TemporalType.DATE)
     private Date birthdate;
-//    @OneToMany
-//    private Collection<Accessibility> accessibilities;
-    @Embedded
-    private Address address;
+
+    @OneToMany
+    private Collection<Address> addresses;
 
     @ElementCollection(fetch = FetchType.EAGER)
     private Collection<String> skills;
@@ -96,27 +95,23 @@ public class User {
         return shortName;
     }
 
-//    public Collection<Accessibility> getAccessibilities() {
-//        return accessibilities;
-//    }
-//
-//    public void addAccessibility(Accessibility accessibility) {
-//        if (accessibilities == null) {
-//            accessibilities = new ArrayList<Accessibility>();
-//        }
-//        accessibilities.add(accessibility);
-//    }
-
     public void setId(Integer id) {
         this.id = id;
     }
 
-    public Address getAddress() {
-        return address;
+    public Collection<Address> getAddress() {
+        return addresses != null ? addresses : Collections.emptyList();
     }
 
-    public void setAddress(Address address) {
-        this.address = address;
+    public void setAddresses(Collection<Address> addresses_arg) {
+        addresses = addresses_arg;
+    }
+
+    public void addAddress(Address address) {
+        if (this.addresses == null) {
+            addresses = new ArrayList<>();
+        }
+        addresses.add(address);
     }
 
     public Collection<String> getSkills() {
