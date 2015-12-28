@@ -7,10 +7,8 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Access(AccessType.FIELD)
-public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.TABLE)
-    private Integer id;
+public class User extends AbstractEntity {
+    private static final long serialVersionUID = -7546375363619283295L;
     @NotNull
     private String shortName;
     private String firstName;
@@ -19,52 +17,26 @@ public class User {
     private Date birthdate;
 
     @OneToMany
-    private Collection<Address> addresses;
+    private List<Address> addresses;
 
     @ElementCollection(fetch = FetchType.EAGER)
-    private Collection<String> skills;
-
-    public void setId(int id) {
-        this.id = id;
-    }
+    private List<String> skills;
 
     public void setShortName(String shortName) {
         this.shortName = shortName;
     }
 
     @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + (id == null ? 0 : id);
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        User other = (User) obj;
-        if (id != other.id) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
     public String toString() {
-        return String.format("User[id=%d; shortname=%s]", id, shortName);
+        return String.format("User[id=%d; shortname=%s]", getId(), shortName);
     }
 
-    public Integer getId() {
-        return id;
+    public List<String> getSkills() {
+        return skills;
+    }
+
+    public void setSkills(List<String> skills) {
+        this.skills = skills;
     }
 
     public String getFirstName() {
@@ -95,34 +67,11 @@ public class User {
         return shortName;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Collection<Address> getAddress() {
+    public List<Address> getAddresses() {
         return addresses != null ? addresses : Collections.emptyList();
     }
 
-    public void setAddresses(Collection<Address> addresses_arg) {
+    public void setAddresses(List<Address> addresses_arg) {
         addresses = addresses_arg;
     }
-
-    public void addAddress(Address address) {
-        if (this.addresses == null) {
-            addresses = new ArrayList<>();
-        }
-        addresses.add(address);
-    }
-
-    public Collection<String> getSkills() {
-        return skills;
-    }
-
-    public void addSkill(String skill) {
-        if (skills == null) {
-            skills = new ArrayList<String>();
-        }
-        skills.add(skill);
-    }
-
 }

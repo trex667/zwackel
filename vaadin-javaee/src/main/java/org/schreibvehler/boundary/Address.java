@@ -7,11 +7,9 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 @Entity
 @Access(AccessType.FIELD)
-public class Address {
+public class Address extends AbstractEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.TABLE)
-    private Integer id;
+    private static final long serialVersionUID = 664418609139844091L;
 
     @ManyToOne
     @NotNull
