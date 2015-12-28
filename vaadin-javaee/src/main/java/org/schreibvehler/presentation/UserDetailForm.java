@@ -13,6 +13,9 @@ public class UserDetailForm extends AbstractForm<User> {
 
     private static final long serialVersionUID = 637692556847519915L;
 
+    @Inject
+    UserService userService;
+
     private TextField shortName = new MTextField("shortName");
     private TextField firstName = new MTextField("First name");
     private TextField lastName = new MTextField("Last name");
@@ -25,15 +28,8 @@ public class UserDetailForm extends AbstractForm<User> {
         TextField zip = new MTextField().withInputPrompt("zip").withWidth("4em");
     }
 
-    public static class SkillRow {
-        TextField skill = new MTextField().withInputPrompt("skill");
-    }
-
     ElementCollectionField<Address> addresses = new ElementCollectionField<>(Address.class, AddressRow.class)
             .withCaption("Addressess");
-
-    @Inject
-    UserService userService;
 
     @Override
     protected Component createContent() {
@@ -41,5 +37,4 @@ public class UserDetailForm extends AbstractForm<User> {
                 new MHorizontalLayout(new MFormLayout(shortName, firstName, lastName, birthDate).withMargin(false)),
                 addresses).withMargin(new MMarginInfo(false, true));
     }
-
 }

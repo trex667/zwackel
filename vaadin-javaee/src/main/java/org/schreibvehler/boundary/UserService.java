@@ -14,9 +14,6 @@ public class UserService {
     @Inject
     UserRepository userRepo;
 
-    // @PersistenceContext(unitName="vaadin-javaee")
-    // EntityManager em;
-
     public void createUser(User user) {
         userRepo.save(user);
     }

@@ -1,7 +1,5 @@
 package org.schreibvehler.presentation;
 
-import java.awt.Dialog;
-
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
@@ -10,7 +8,6 @@ import org.vaadin.cdiviewmenu.ViewMenuItem;
 import org.vaadin.viritin.layouts.*;
 
 import com.vaadin.cdi.*;
-import com.vaadin.data.Item;
 import com.vaadin.data.util.*;
 import com.vaadin.event.ItemClickEvent;
 import com.vaadin.navigator.View;
@@ -59,7 +56,7 @@ public class UserView extends CssLayout implements View {
     }
 
     private void entrySelected(ItemClickEvent e) {
-        BeanItem<User> item = (BeanItem<User>)e.getItem();
+        BeanItem<User> item = (BeanItem<User>) e.getItem();
         form.setEntity(item.getBean());
 
     }
