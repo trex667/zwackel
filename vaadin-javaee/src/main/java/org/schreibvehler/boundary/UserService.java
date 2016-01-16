@@ -52,7 +52,7 @@ public class UserService {
         user.setFirstName("Petrosilius");
         user.setLastName("Zwackelmann");
         user.setBirthdate(DateUtils.addYears(new Date(), -99));
-        user.setSkills(Arrays.asList("zaubern, schimpfen, fliegen"));
+//        user.setSkills(Arrays.asList("zaubern, schimpfen, fliegen"));
 
         if (findbyShortName("zwackel") == null) {
             createUser(user);
@@ -63,7 +63,7 @@ public class UserService {
         user.setFirstName("Räuber");
         user.setLastName("Hotzenplotz");
         user.setBirthdate(DateUtils.addYears(new Date(), -42));
-        user.setSkills(Arrays.asList("stehlen, schießen, essen"));
+//        user.setSkills(Arrays.asList("stehlen, schießen, essen"));
 
         if (findbyShortName("hotzenplotz") == null) {
             createUser(user);

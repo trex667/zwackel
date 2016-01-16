@@ -19,8 +19,8 @@ public class User extends AbstractEntity {
     @OneToMany
     private List<Address> addresses;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    private List<String> skills;
+//    @ElementCollection(fetch = FetchType.EAGER)
+//    private List<String> skills;
 
     public void setShortName(String shortName) {
         this.shortName = shortName;
@@ -31,13 +31,13 @@ public class User extends AbstractEntity {
         return String.format("User[id=%d; shortname=%s]", getId(), shortName);
     }
 
-    public List<String> getSkills() {
-        return skills;
-    }
-
-    public void setSkills(List<String> skills) {
-        this.skills = skills;
-    }
+//    public List<String> getSkills() {
+//        return skills;
+//    }
+//
+//    public void setSkills(List<String> skills) {
+//        this.skills = skills;
+//    }
 
     public String getFirstName() {
         return firstName;
