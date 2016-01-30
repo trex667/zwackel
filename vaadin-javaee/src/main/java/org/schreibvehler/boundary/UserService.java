@@ -4,7 +4,7 @@ import java.util.*;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.persistence.NoResultException;
+import javax.persistence.*;
 
 import org.apache.commons.lang3.time.DateUtils;
 
@@ -13,6 +13,9 @@ public class UserService {
 
     @Inject
     UserRepository userRepo;
+    
+    @PersistenceContext(unitName = "vaadin-javaee")
+    EntityManager em;
 
     public void createUser(User user) {
         userRepo.save(user);
@@ -68,5 +71,23 @@ public class UserService {
         if (findbyShortName("hotzenplotz") == null) {
             createUser(user);
         }
+    }
+
+    public User loadFully(User entry) {
+        EntityGraph<User> graph = this.em.createEntityGraph(
+                User.class);
+        graph.addSubgraph("addresses");
+        entry = userRepo.findById(entry.getId())
+                .hint("javax.persistence.loadgraph", graph)
+                .getSingleResult();
+        return entry;
+    }
+    
+    public List<User> getEntries(String filter) {
+        if (filter == null) {
+            return userRepo.findAll();
+        }
+        return userRepo.findByShortNameLikeIgnoreCase("%" + filter + "%").
+                getResultList();
     }
 }

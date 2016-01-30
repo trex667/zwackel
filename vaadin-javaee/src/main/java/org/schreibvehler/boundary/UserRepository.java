@@ -11,4 +11,8 @@ public interface UserRepository extends EntityRepository<User, Long> {
 
     @Query("SELECT u FROM User u LEFT JOIN FETCH u.addresses")
     public List<User> findAll();
+    
+    public QueryResult<User> findById(Long id);
+    
+    public QueryResult<User> findByShortNameLikeIgnoreCase(String filter);
 }

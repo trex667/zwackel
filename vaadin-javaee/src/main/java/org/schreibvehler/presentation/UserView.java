@@ -26,6 +26,8 @@ public class UserView extends CssLayout implements View {
     UserService userService;
 
     private MTable<User> entryList;
+    
+    private TextField filter;
 
     @Inject
     UserDetailForm form;
@@ -33,19 +35,27 @@ public class UserView extends CssLayout implements View {
     @PostConstruct
     public void init() {
 //        userService.removeAllUsers();
-    }
-
-    @Override
-    public void enter(ViewChangeEvent event) {
         userService.ensureDemoData();
         entryList = createUserTable();
         
         entryList.addMValueChangeListener(this::entrySelected);
         form.setSavedHandler(this::entrySaved);
+        form.setResetHandler(this::entryEditCanceled);
         
         Button addNew = new MButton(FontAwesome.PLUS, this::addNew);
+        Button delete = new MButton(FontAwesome.TRASH_O, this::deleteSelected);
+        filter = new MTextField().withInputPrompt("short name filter...");
         
-        addComponents(new MVerticalLayout(new MHorizontalLayout(entryList, form)));
+        filter.addTextChangeListener(e -> {
+            listEntries(e.getText());
+        });
+        
+        addComponents(new MVerticalLayout(new MHorizontalLayout(addNew, delete, filter),
+                new MHorizontalLayout(entryList, form)));
+    }
+
+    @Override
+    public void enter(ViewChangeEvent event) {
 
     }
 
@@ -75,6 +85,7 @@ public class UserView extends CssLayout implements View {
     
     public void entrySaved(User value) {
         try {
+            System.out.println(value);
             userService.createUser(value);
             form.setVisible(false);
         } catch (Exception e) {
@@ -92,10 +103,30 @@ public class UserView extends CssLayout implements View {
             boolean persisted = entry.getId() != null;
             if (persisted) {
                 // reattach (in case Hibernate is in use)
-//                entry = userService.loadFully(entry);
+                entry = userService.loadFully(entry);
             }
             form.setEntity(entry);
             form.focusFirst();
         }
     }
+    
+    private void deleteSelected(Button.ClickEvent e) {
+        userService.removeUser(entryList.getValue().getId());
+        listEntries();
+        entryList.setValue(null);
+    }
+    
+    private void listEntries(String filter) {
+        entryList.setBeans(userService.getEntries(filter));
+        //lazyListEntries(filter);
+    }
+
+    private void listEntries() {
+        listEntries(filter.getValue());
+    }
+    
+    private void entryEditCanceled(User entry) {
+        editEntry(entryList.getValue());
+    }
+
 }
