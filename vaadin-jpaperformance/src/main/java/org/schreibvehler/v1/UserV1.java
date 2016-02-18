@@ -23,7 +23,7 @@ public class UserV1 implements User {
 
     @Transient
     TimeInterval timeInterval;
-    
+
     @Override
     public TimeInterval getTimeInterval() {
         return timeInterval;
@@ -35,7 +35,7 @@ public class UserV1 implements User {
     }
 
     @Override
-    public Date getBirthDate() {
+    public Date getBirthdate() {
         return birthdate;
     }
 
@@ -55,10 +55,6 @@ public class UserV1 implements User {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Date getBirthdate() {
-        return birthdate;
     }
 
     public void setBirthdate(Date birthdate) {

@@ -19,12 +19,13 @@
             <property name="javax.persistence.jdbc.password" value="z" />
 
             <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect" />
-            <property name="hibernate.hbm2ddl.auto" value="create-drop" />
+<!--             <property name="hibernate.hbm2ddl.auto" value="create-drop" /> -->
+            <property name="hibernate.hbm2ddl.auto" value="update" />
             <property name="hibernate.show_sql" value="true" />
 
 <!-- <property name="openjpa.Log" value="log4j" /> -->
 <!--       <property name="openjpa.ConnectionFactoryProperties" value="PrintParameters=true, PrettyPrint=true, PrettyPrintLineLength=72" /> -->
-            <!-- Hibernate: For SQL logging set the log categories org.hibernate.SQL und org.hibernate.type.descriptor.sql.BasicBinder 
+            <!-- Hibernate: For SQL logging set the log categories org.hibernate.SQL und org.hibernate.type.descriptor.sql.BasicBinder
                 to TRACE -->
             <!-- OpenJPA: For SQL logging set the log category log4j.category.openjpa.jdbc.SQL to TRACE -->
 <!--             <property name="openjpa.Log" value="log4j" /> -->
