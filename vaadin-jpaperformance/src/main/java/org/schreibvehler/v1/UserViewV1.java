@@ -10,14 +10,14 @@ import org.schreibvehler.presentation.UIUtils;
 import org.vaadin.viritin.fields.MTable;
 
 import com.vaadin.cdi.CDIView;
+import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.*;
 
 
 @CDIView("V1")
-public class UserViewV1 extends VerticalLayout implements View
+public class UserViewV1 extends HorizontalLayout implements View
 {
 
     private static final long serialVersionUID = 7277988489611347314L;
@@ -25,12 +25,7 @@ public class UserViewV1 extends VerticalLayout implements View
     @Inject
     private UserService userService;
 
-    private MTable<User> userTable;
-
-    private Button createDataButton;
-
-
-    @PostConstruct
+     @PostConstruct
     public void init()
     {
         setMargin(true);
@@ -42,17 +37,14 @@ public class UserViewV1 extends VerticalLayout implements View
     @Override
     public void enter(ViewChangeEvent event)
     {
-        userTable = UIUtils.createUserTable();
-
-        createDataButton = new Button("create 1000 new users (can take some time...)");
-        createDataButton.addClickListener(e -> {
-            userTable.addBeans(userService.createTestData());
-        });
-
+        MTable<User> userTable = UIUtils.createUserTable();
+        
+        Layout leftPart = UIUtils.createFieldAndButton(userService, userTable);
+        
         userTable.setBeans(userService.findAllUsers());
 
-        addComponent(createDataButton);
         addComponent(userTable);
+        addComponent(leftPart);
     }
 
 }

@@ -22,16 +22,16 @@
             <version>1.25</version>
         </dependency>
 <!-- needed by viritin -->
-        <dependency>
-            <groupId>org.commonjava.googlecode.markdown4j</groupId>
-            <artifactId>markdown4j</artifactId>
-            <version>2.2-cj-1.0</version>
-        </dependency>
-        <dependency>
-            <groupId>commons-beanutils</groupId>
-            <artifactId>commons-beanutils</artifactId>
-            <version>1.9.1</version>
-        </dependency>
+<!--         <dependency> -->
+<!--             <groupId>org.commonjava.googlecode.markdown4j</groupId> -->
+<!--             <artifactId>markdown4j</artifactId> -->
+<!--             <version>2.2-cj-1.0</version> -->
+<!--         </dependency> -->
+<!--         <dependency> -->
+<!--             <groupId>commons-beanutils</groupId> -->
+<!--             <artifactId>commons-beanutils</artifactId> -->
+<!--             <version>1.9.1</version> -->
+<!--         </dependency> -->
 <!-- end needed by viritin -->
         <dependency>
             <groupId>com.vaadin</groupId>

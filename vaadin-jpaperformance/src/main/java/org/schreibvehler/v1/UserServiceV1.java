@@ -35,11 +35,11 @@ public class UserServiceV1 implements UserService
 
 
     @Override
-    public List<User> createTestData()
+    public List<User> createTestData(int count)
     {
         List<User> result = new ArrayList<>();
         createOrganizations();
-        for (int i = 0; i < 1000; i++)
+        for (int i = 0; i < count; i++)
         {
             UserV1 user = new UserV1();
             user.setName(RandomStringUtils.randomAlphabetic(20));

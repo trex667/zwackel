@@ -6,5 +6,5 @@ public interface UserService {
 
     List<User> findAllUsers();
 
-    List<User> createTestData();
+    List<User> createTestData(int count);
 }
