@@ -6,6 +6,7 @@ import javax.inject.Inject;
 
 import org.schreibvehler.boundary.User;
 import org.schreibvehler.boundary.UserService;
+import org.schreibvehler.presentation.UIUtils;
 import org.vaadin.viritin.fields.MTable;
 
 import com.vaadin.cdi.CDIView;
@@ -26,6 +27,8 @@ public class UserViewV1 extends VerticalLayout implements View
 
     private MTable<User> userTable;
 
+    private Button createDataButton;
+
 
     @PostConstruct
     public void init()
@@ -39,16 +42,16 @@ public class UserViewV1 extends VerticalLayout implements View
     @Override
     public void enter(ViewChangeEvent event)
     {
-        userTable = new MTable<>(User.class).withHeight("800px").withWidth("500px").withProperties("name", "birthdate").withColumnHeaders("name", "birth date");
+        userTable = UIUtils.createUserTable();
 
-        Button createData = new Button("create 1000 new users (can take some time...)");
-        createData.addClickListener(e -> {
+        createDataButton = new Button("create 1000 new users (can take some time...)");
+        createDataButton.addClickListener(e -> {
             userTable.addBeans(userService.createTestData());
         });
 
         userTable.setBeans(userService.findAllUsers());
 
-        addComponent(createData);
+        addComponent(createDataButton);
         addComponent(userTable);
     }
 
