@@ -16,6 +16,8 @@ public class AddressV1 implements Address {
     private Integer postCode;
     private String city;
     private String country;
+    @ManyToOne
+    private UserV1 user;
 
     @Override
     public String getStreet() {
@@ -59,6 +61,14 @@ public class AddressV1 implements Address {
 
     public void setCountry(String country) {
         this.country = country;
+    }
+
+    public UserV1 getUser() {
+        return user;
+    }
+
+    public void setUser(UserV1 user) {
+        this.user = user;
     }
 
 }

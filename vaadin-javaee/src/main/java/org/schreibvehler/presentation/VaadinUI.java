@@ -5,7 +5,7 @@ import org.vaadin.cdiviewmenu.ViewMenuUI;
 import com.vaadin.annotations.*;
 import com.vaadin.cdi.CDIUI;
 
-@CDIUI
+@CDIUI("")
 @Theme("valo")
 @Title("users")
 public class VaadinUI extends ViewMenuUI {

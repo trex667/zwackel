@@ -4,8 +4,7 @@ import java.util.*;
 
 public interface User {
 
-    TimeInterval getTimeInterval();
-
+    Integer getId();
     String getName();
     Date getBirthdate();
 

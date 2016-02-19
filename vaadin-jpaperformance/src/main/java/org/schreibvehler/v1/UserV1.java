@@ -21,13 +21,6 @@ public class UserV1 implements User {
     @ManyToMany
     private List<OrganizationV1> organizations;
 
-    @Transient
-    TimeInterval timeInterval;
-
-    @Override
-    public TimeInterval getTimeInterval() {
-        return timeInterval;
-    }
 
     @Override
     public String getName() {
@@ -49,6 +42,7 @@ public class UserV1 implements User {
         return Collections.unmodifiableList(organizations);
     }
 
+    @Override
     public Integer getId() {
         return id;
     }
@@ -72,9 +66,4 @@ public class UserV1 implements User {
     public void setOrganizations(List<OrganizationV1> organizations) {
         this.organizations = organizations;
     }
-
-    public void setTimeInterval(TimeInterval timeInterval) {
-        this.timeInterval = timeInterval;
-    }
-
 }

@@ -7,4 +7,6 @@ public interface UserService {
     List<User> findAllUsers();
 
     List<User> createTestData(int count);
+
+    List<Address> findAllAddresses(Integer userId);
 }

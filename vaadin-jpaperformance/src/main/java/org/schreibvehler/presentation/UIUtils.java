@@ -7,21 +7,31 @@
  */
 package org.schreibvehler.presentation;
 
+import java.util.List;
 
 import org.schreibvehler.boundary.*;
 import org.vaadin.viritin.fields.MTable;
 
+import com.vaadin.data.util.BeanItem;
+import com.vaadin.event.ItemClickEvent;
+import com.vaadin.shared.ui.MultiSelectMode;
 import com.vaadin.ui.*;
 
-
-public class UIUtils
-{
-    public static MTable<User> createUserTable()
-    {
-        return new MTable<>(User.class).withHeight("700px").withWidth("500px").withProperties("name", "birthdate").withColumnHeaders("name", "birth date");
+public class UIUtils {
+    public static MTable<User> createUserTable() {
+        MTable<User> table = new MTable<>(User.class).withHeight("700px").withWidth("500px")
+                .withProperties("name", "birthdate").withColumnHeaders("name", "birth date");
+        table.setMultiSelectMode(MultiSelectMode.SIMPLE);
+        return table;
     }
-    
-    public static Layout createFieldAndButton(UserService userService, MTable<User> userTable){
+    public static MTable<Address> createaddressTable(List<Address> addresses) {
+        MTable<Address> table = new MTable<>(Address.class).withHeight("400px").withWidth("400px")
+                .withProperties("street", "postCade", "city", "country").withColumnHeaders("Street", "post code", "City", "Country");
+        table.setBeans(addresses);
+        return table;
+    }
+
+    public static Layout createFieldAndButton(UserService userService, MTable<User> userTable) {
         VerticalLayout leftPart = new VerticalLayout();
         leftPart.setMargin(true);
         leftPart.setSpacing(true);
@@ -32,7 +42,7 @@ public class UIUtils
             userTable.addBeans(userService.createTestData(Integer.parseInt(numberOfUsers.getValue())));
         });
         leftPart.addComponent(createDataButton);
-        
+
         return leftPart;
     }
 }
