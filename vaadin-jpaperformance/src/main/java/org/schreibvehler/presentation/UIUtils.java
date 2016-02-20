@@ -12,8 +12,6 @@ import java.util.List;
 import org.schreibvehler.boundary.*;
 import org.vaadin.viritin.fields.MTable;
 
-import com.vaadin.data.util.BeanItem;
-import com.vaadin.event.ItemClickEvent;
 import com.vaadin.shared.ui.MultiSelectMode;
 import com.vaadin.ui.*;
 
@@ -24,10 +22,22 @@ public class UIUtils {
         table.setMultiSelectMode(MultiSelectMode.SIMPLE);
         return table;
     }
+
     public static MTable<Address> createaddressTable(List<Address> addresses) {
+        for (Address a : addresses) {
+            System.out.println("city: " + a.getCity());
+        }
         MTable<Address> table = new MTable<>(Address.class).withHeight("400px").withWidth("400px")
-                .withProperties("street", "postCade", "city", "country").withColumnHeaders("Street", "post code", "City", "Country");
+                .withProperties("street", "postCode", "city", "country")
+                .withColumnHeaders("Street", "post code", "City", "Country");
         table.setBeans(addresses);
+        return table;
+    }
+
+    public static MTable<Organization> createOrganizationTable(List<Organization> orgs) {
+        MTable<Organization> table = new MTable<>(Organization.class).withHeight("400px").withWidth("400px")
+                .withProperties("name").withColumnHeaders("Organization name");
+        table.setBeans(orgs);
         return table;
     }
 

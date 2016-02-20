@@ -7,8 +7,7 @@ import org.vaadin.viritin.label.RichText;
 import org.vaadin.viritin.layouts.MVerticalLayout;
 
 import com.vaadin.cdi.CDIView;
-import com.vaadin.navigator.View;
-import com.vaadin.navigator.ViewChangeListener;
+import com.vaadin.navigator.*;
 
 @CDIView("")
 public class AboutView extends MVerticalLayout implements View {

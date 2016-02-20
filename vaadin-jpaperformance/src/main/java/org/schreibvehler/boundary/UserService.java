@@ -9,4 +9,6 @@ public interface UserService {
     List<User> createTestData(int count);
 
     List<Address> findAllAddresses(Integer userId);
+
+    List<Organization> findAllOrganizations(Integer userId);
 }
