@@ -6,6 +6,7 @@ import javax.inject.Inject;
 
 import org.schreibvehler.boundary.Address;
 import org.schreibvehler.boundary.Organization;
+import org.schreibvehler.boundary.Result;
 import org.schreibvehler.boundary.User;
 import org.schreibvehler.boundary.UserService;
 import org.schreibvehler.presentation.UIUtils;
@@ -51,15 +52,17 @@ public class UserViewV1 extends HorizontalLayout implements View
     @Override
     public void enter(ViewChangeEvent event)
     {
+        Result<User> userResult = userService.findAllUsers();
+        Label timeInterval = new Label(String.format("<h3>findAllUsers() of %d datasets needs %d [ms]</h3>", userResult.getList().size(), userResult.getTimeInterval().getEnd() - userResult.getTimeInterval().getStart()), ContentMode.HTML);
         MTable<User> userTable = uiUtils.createUserTable();
 
         Layout leftPart = uiUtils.createFieldAndButton(userService, userTable);
 
-        userTable.setBeans(userService.findAllUsers());
+        userTable.setBeans(userResult.getList());
         userTable.addItemClickListener(e -> {
             openDetailDialog(e);
         });
-        addComponent(userTable);
+        addComponent(new VerticalLayout(timeInterval, userTable));
         addComponent(leftPart);
     }
 
@@ -67,6 +70,12 @@ public class UserViewV1 extends HorizontalLayout implements View
     private void openDetailDialog(ItemClickEvent e)
     {
         Integer userId = (Integer)e.getItem().getItemProperty("id").getValue();
+        Result<Address> addressResult = userService.findAllAddresses(userId);
+        Result<Organization> organizationResult = userService.findAllOrganizations(userId);
+
+        Label addressTimeInterval = new Label(String.format("<h3>findAllAddresses() of %d datasets needs %d [ms]</h3>", addressResult.getList().size(), addressResult.getTimeInterval().getEnd() - addressResult.getTimeInterval().getStart()), ContentMode.HTML);
+        Label organizationTimeInterval = new Label(String.format("<h3>findAllOrganizations() of %d datasets needs %d [ms]</h3>", organizationResult.getList().size(), organizationResult.getTimeInterval().getEnd() - organizationResult.getTimeInterval().getStart()), ContentMode.HTML);
+
         Window dialog = new Window("User details");
         dialog.setModal(true);
         VerticalLayout layout = new VerticalLayout();
@@ -74,10 +83,11 @@ public class UserViewV1 extends HorizontalLayout implements View
         layout.setSpacing(true);
 
         TabSheet sheet = new TabSheet();
-        MTable<Address> addressTable = uiUtils.createaddressTable(userService.findAllAddresses(userId));
-        sheet.addTab(addressTable, "Addresses");
-        MTable<Organization> organizationTable = uiUtils.createOrganizationTable(userService.findAllOrganizations(userId));
-        sheet.addTab(organizationTable, "Organizations");
+        MTable<Address> addressTable = uiUtils.createaddressTable(addressResult.getList());
+        sheet.addTab(new VerticalLayout(addressTimeInterval, addressTable), "Addresses");
+
+        MTable<Organization> organizationTable = uiUtils.createOrganizationTable(organizationResult.getList());
+        sheet.addTab(new VerticalLayout(organizationTimeInterval, organizationTable), "Organizations");
 
         layout.addComponent(new Label(String.format("Details of user (birth date): %s (%s)", e.getItem().getItemProperty("name").getValue().toString(), e.getItem().getItemProperty("birthdate").getValue().toString()), ContentMode.HTML));
         layout.addComponent(sheet);

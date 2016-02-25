@@ -1,51 +1,76 @@
 package org.schreibvehler.v1;
 
-import java.util.*;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.logging.Logger;
 
 import javax.ejb.Stateless;
-import javax.persistence.*;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.time.DateUtils;
-import org.schreibvehler.boundary.*;
+import org.schreibvehler.boundary.Address;
+import org.schreibvehler.boundary.DataUtils;
+import org.schreibvehler.boundary.Organization;
+import org.schreibvehler.boundary.Result;
+import org.schreibvehler.boundary.TimeInterval;
+import org.schreibvehler.boundary.User;
+import org.schreibvehler.boundary.UserService;
+
 
 @Stateless
-public class UserServiceV1 implements UserService {
+public class UserServiceV1 implements UserService
+{
 
     private static final Logger LOG = Logger.getLogger(UserServiceV1.class.getName());
 
     @PersistenceContext
     private EntityManager em;
 
+
     @Override
-    public List<User> findAllUsers() {
+    public Result<User> findAllUsers()
+    {
+        long start = System.currentTimeMillis();
         TypedQuery<User> query = em.createQuery("SELECT u FROM UserV1 u", User.class);
 
-        return query.getResultList();
+        List<User> list = query.getResultList();
+        long end = System.currentTimeMillis();
+        return new Result<User>(new TimeInterval(start, end), list);
     }
 
+
     @Override
-    public List<User> createTestData(int count) {
-        List<User> result = new ArrayList<>();
+    public Result<User> createTestData(int count)
+    {
+        long start = System.currentTimeMillis();
+        List<User> resultList = new ArrayList<>();
         List<UserV1> entities = new ArrayList<>();
-        for (int i = 0; i < count; i++) {
+        for (int i = 0; i < count; i++)
+        {
             UserV1 user = new UserV1();
             user.setName(RandomStringUtils.randomAlphabetic(20));
-            user.setBirthdate(
-                    DateUtils.addYears(new Date(), Integer.parseInt(RandomStringUtils.random(2, "123456789")) * -1));
+            user.setBirthdate(DateUtils.addYears(new Date(), Integer.parseInt(RandomStringUtils.random(2, "123456789")) * -1));
             em.persist(user);
 
             createAddresses(user);
-            result.add(user);
+            resultList.add(user);
             entities.add(user);
         }
         createOrganizations(entities);
-        return result;
+        long end = System.currentTimeMillis();
+        return new Result<User>(new TimeInterval(start, end), resultList);
     }
 
-    private void createOrganizations(List<UserV1> users) {
-        for (int i = 0; i < 100; i++) {
+
+    private void createOrganizations(List<UserV1> users)
+    {
+        for (int i = 0; i < 100; i++)
+        {
             OrganizationV1 org = new OrganizationV1();
             org.setUsers(users);
             org.setName(RandomStringUtils.randomAlphabetic(20));
@@ -54,15 +79,20 @@ public class UserServiceV1 implements UserService {
 
     }
 
-    private List<OrganizationV1> getOrganizations() {
+
+    private List<OrganizationV1> getOrganizations()
+    {
         TypedQuery<OrganizationV1> query = em.createQuery("Select o from OrganizationV1 o", OrganizationV1.class);
         return query.getResultList();
     }
 
-    private List<AddressV1> createAddresses(UserV1 user) {
+
+    private List<AddressV1> createAddresses(UserV1 user)
+    {
         List<AddressV1> result = new ArrayList<>();
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 10; i++)
+        {
             AddressV1 address = new AddressV1();
             address.setUser(user);
             address.setCity(DataUtils.getRandomCity());
@@ -75,22 +105,30 @@ public class UserServiceV1 implements UserService {
         return result;
     }
 
+
     @Override
-    public List<Address> findAllAddresses(Integer userId) {
+    public Result<Address> findAllAddresses(Integer userId)
+    {
+        long start = System.currentTimeMillis();
         TypedQuery<Address> query = em.createQuery("SELECT a FROM AddressV1 a WHERE a.user.id=:userid", Address.class);
         query.setParameter("userid", userId);
 
-        LOG.info(String.format("Found %d addresses for userId %d", query.getResultList().size(), userId));
-        return query.getResultList();
+        List<Address> resultList = query.getResultList();
+        long end = System.currentTimeMillis();
+        return new Result<Address>(new TimeInterval(start, end), resultList);
     }
 
+
     @Override
-    public List<Organization> findAllOrganizations(Integer userId) {
+    public Result<Organization> findAllOrganizations(Integer userId)
+    {
+        long start = System.currentTimeMillis();
         TypedQuery<Organization> query = em.createQuery("SELECT o FROM OrganizationV1 o WHERE :user MEMBER OF o.users", Organization.class);
         query.setParameter("user", em.find(UserV1.class, userId));
-        
-        LOG.info(String.format("Found %d organizations for userId %d", query.getResultList().size(), userId));
-        return query.getResultList();
+
+        List<Organization> resultList = query.getResultList();
+        long end = System.currentTimeMillis();
+        return new Result<Organization>(new TimeInterval(start, end), resultList);
     }
 
 }

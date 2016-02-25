@@ -1,14 +1,12 @@
 package org.schreibvehler.boundary;
 
-import java.util.List;
-
 public interface UserService {
 
-    List<User> findAllUsers();
+    Result<User> findAllUsers();
 
-    List<User> createTestData(int count);
+    Result<User> createTestData(int count);
 
-    List<Address> findAllAddresses(Integer userId);
+    Result<Address> findAllAddresses(Integer userId);
 
-    List<Organization> findAllOrganizations(Integer userId);
+    Result<Organization> findAllOrganizations(Integer userId);
 }
