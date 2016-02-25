@@ -16,11 +16,10 @@ public class UserV2 implements User {
     private String name;
     @Temporal(TemporalType.DATE)
     private Date birthdate;
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
     private List<AddressV2> addresses;
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "users")
     private List<OrganizationV2> organizations;
-
 
     @Override
     public String getName() {
