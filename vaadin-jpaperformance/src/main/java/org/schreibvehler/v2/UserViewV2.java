@@ -73,6 +73,8 @@ public class UserViewV2 extends HorizontalLayout implements View
     private void openDetailDialog(ItemClickEvent e)
     {
         Integer userId = (Integer)e.getItem().getItemProperty("id").getValue();
+        User user = userResult.getList().stream().filter(u -> u.getId().equals(userId)).findFirst().get();
+        //TODO
         Label addressTimeInterval = new Label("<h3>Addresses are already fetched with findAllUsers()</h3>", ContentMode.HTML);
         Label organizationTimeInterval = new Label("<h3>Organizations  are already fetched with findAllUsers()</h3>", ContentMode.HTML);
 
@@ -83,10 +85,10 @@ public class UserViewV2 extends HorizontalLayout implements View
         layout.setSpacing(true);
 
         TabSheet sheet = new TabSheet();
-        MTable<Address> addressTable = uiUtils.createaddressTable(userResult.getList().stream().filter(u -> u.getId().equals(userId)).findFirst().get().getAddresses());
+        MTable<Address> addressTable = uiUtils.createaddressTable(user.getAddresses());
         sheet.addTab(new VerticalLayout(addressTimeInterval, addressTable), "Addresses");
 
-        MTable<Organization> organizationTable = uiUtils.createOrganizationTable(userResult.getList().stream().filter(u -> u.getId().equals(userId)).findFirst().get().getOrganizations());
+        MTable<Organization> organizationTable = uiUtils.createOrganizationTable(user.getOrganizations());
         sheet.addTab(new VerticalLayout(organizationTimeInterval, organizationTable), "Organizations");
 
         layout.addComponent(new Label(String.format("Details of user (birth date): %s (%s)", e.getItem().getItemProperty("name").getValue().toString(), e.getItem().getItemProperty("birthdate").getValue().toString()), ContentMode.HTML));
