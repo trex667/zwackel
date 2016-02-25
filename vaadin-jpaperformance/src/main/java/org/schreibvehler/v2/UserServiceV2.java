@@ -39,6 +39,10 @@ public class UserServiceV2 implements UserService
         TypedQuery<User> query = em.createQuery("SELECT u FROM UserV2 u", User.class);
 
         List<User> list = query.getResultList();
+//        list.stream().forEach(u -> {
+//            u.getAddresses();
+//            u.getOrganizations();
+//        });
         long end = System.currentTimeMillis();
         return new Result<User>(new TimeInterval(start, end), list);
     }
@@ -78,6 +82,7 @@ public class UserServiceV2 implements UserService
         }
 
     }
+
 
     private List<AddressV2> createAddresses(UserV2 user)
     {
