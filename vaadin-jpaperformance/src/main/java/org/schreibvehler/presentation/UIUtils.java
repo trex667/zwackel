@@ -16,17 +16,14 @@ import com.vaadin.shared.ui.MultiSelectMode;
 import com.vaadin.ui.*;
 
 public class UIUtils {
-    public static MTable<User> createUserTable() {
+    public MTable<User> createUserTable() {
         MTable<User> table = new MTable<>(User.class).withHeight("700px").withWidth("500px")
                 .withProperties("name", "birthdate").withColumnHeaders("name", "birth date");
         table.setMultiSelectMode(MultiSelectMode.SIMPLE);
         return table;
     }
 
-    public static MTable<Address> createaddressTable(List<Address> addresses) {
-        for (Address a : addresses) {
-            System.out.println("city: " + a.getCity());
-        }
+    public MTable<Address> createaddressTable(List<Address> addresses) {
         MTable<Address> table = new MTable<>(Address.class).withHeight("400px").withWidth("400px")
                 .withProperties("street", "postCode", "city", "country")
                 .withColumnHeaders("Street", "post code", "City", "Country");
@@ -34,14 +31,14 @@ public class UIUtils {
         return table;
     }
 
-    public static MTable<Organization> createOrganizationTable(List<Organization> orgs) {
+    public MTable<Organization> createOrganizationTable(List<Organization> orgs) {
         MTable<Organization> table = new MTable<>(Organization.class).withHeight("400px").withWidth("400px")
                 .withProperties("name").withColumnHeaders("Organization name");
         table.setBeans(orgs);
         return table;
     }
 
-    public static Layout createFieldAndButton(UserService userService, MTable<User> userTable) {
+    public Layout createFieldAndButton(UserService userService, MTable<User> userTable) {
         VerticalLayout leftPart = new VerticalLayout();
         leftPart.setMargin(true);
         leftPart.setSpacing(true);
