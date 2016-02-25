@@ -1,4 +1,4 @@
-package org.schreibvehler.v1;
+package org.schreibvehler.v2;
 
 
 import java.util.ArrayList;
@@ -23,10 +23,10 @@ import org.schreibvehler.boundary.UserService;
 
 
 @Stateless
-public class UserServiceV1 implements UserService
+public class UserServiceV2 implements UserService
 {
 
-    private static final Logger LOG = Logger.getLogger(UserServiceV1.class.getName());
+    private static final Logger LOG = Logger.getLogger(UserServiceV2.class.getName());
 
     @PersistenceContext
     private EntityManager em;
@@ -36,7 +36,7 @@ public class UserServiceV1 implements UserService
     public Result<User> findAllUsers()
     {
         long start = System.currentTimeMillis();
-        TypedQuery<User> query = em.createQuery("SELECT u FROM UserV1 u", User.class);
+        TypedQuery<User> query = em.createQuery("SELECT u FROM UserV2 u", User.class);
 
         List<User> list = query.getResultList();
         long end = System.currentTimeMillis();
@@ -49,10 +49,10 @@ public class UserServiceV1 implements UserService
     {
         long start = System.currentTimeMillis();
         List<User> resultList = new ArrayList<>();
-        List<UserV1> entities = new ArrayList<>();
+        List<UserV2> entities = new ArrayList<>();
         for (int i = 0; i < count; i++)
         {
-            UserV1 user = new UserV1();
+            UserV2 user = new UserV2();
             user.setName(RandomStringUtils.randomAlphabetic(20));
             user.setBirthdate(DateUtils.addYears(new Date(), Integer.parseInt(RandomStringUtils.random(2, "123456789")) * -1));
             em.persist(user);
@@ -67,11 +67,11 @@ public class UserServiceV1 implements UserService
     }
 
 
-    private void createOrganizations(List<UserV1> users)
+    private void createOrganizations(List<UserV2> users)
     {
         for (int i = 0; i < 100; i++)
         {
-            OrganizationV1 org = new OrganizationV1();
+            OrganizationV2 org = new OrganizationV2();
             org.setUsers(users);
             org.setName(RandomStringUtils.randomAlphabetic(20));
             em.persist(org);
@@ -79,14 +79,13 @@ public class UserServiceV1 implements UserService
 
     }
 
-
-    private List<AddressV1> createAddresses(UserV1 user)
+    private List<AddressV2> createAddresses(UserV2 user)
     {
-        List<AddressV1> result = new ArrayList<>();
+        List<AddressV2> result = new ArrayList<>();
 
         for (int i = 0; i < 10; i++)
         {
-            AddressV1 address = new AddressV1();
+            AddressV2 address = new AddressV2();
             address.setUser(user);
             address.setCity(DataUtils.getRandomCity());
             address.setCountry("Germany");
@@ -103,7 +102,7 @@ public class UserServiceV1 implements UserService
     public Result<Address> findAllAddresses(Integer userId)
     {
         long start = System.currentTimeMillis();
-        TypedQuery<Address> query = em.createQuery("SELECT a FROM AddressV1 a WHERE a.user.id=:userid", Address.class);
+        TypedQuery<Address> query = em.createQuery("SELECT a FROM AddressV2 a WHERE a.user.id=:userid", Address.class);
         query.setParameter("userid", userId);
 
         List<Address> resultList = query.getResultList();
@@ -116,8 +115,8 @@ public class UserServiceV1 implements UserService
     public Result<Organization> findAllOrganizations(Integer userId)
     {
         long start = System.currentTimeMillis();
-        TypedQuery<Organization> query = em.createQuery("SELECT o FROM OrganizationV1 o WHERE :user MEMBER OF o.users", Organization.class);
-        query.setParameter("user", em.find(UserV1.class, userId));
+        TypedQuery<Organization> query = em.createQuery("SELECT o FROM OrganizationV2 o WHERE :user MEMBER OF o.users", Organization.class);
+        query.setParameter("user", em.find(UserV2.class, userId));
 
         List<Organization> resultList = query.getResultList();
         long end = System.currentTimeMillis();

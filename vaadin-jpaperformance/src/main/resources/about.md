@@ -7,4 +7,5 @@ There are several versions of the same jpa examples with different loading strat
 ### A USER can have many ADDRESSES (oneToMany)
 ### A USER can have many ORGANIZATIONS and a ORGANIZATION can have many USERS (manyToMany)
 All versions follow different strategies to load the data, but the entryPoint is always a service to load all users.
-## V1 represents a lazy loading for addresses and organizations 
+## V1 represents a LAZY loading for addresses and organizations
+## V2 represents a EAGER loading for addresses and organizations

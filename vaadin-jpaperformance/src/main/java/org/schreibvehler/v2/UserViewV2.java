@@ -1,4 +1,4 @@
-package org.schreibvehler.v1;
+package org.schreibvehler.v2;
 
 
 import javax.annotation.PostConstruct;
@@ -28,17 +28,19 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 
 
-@CDIView("V1")
-public class UserViewV1 extends HorizontalLayout implements View
+@CDIView("V2")
+public class UserViewV2 extends HorizontalLayout implements View
 {
 
     private static final long serialVersionUID = 7277988489611347314L;
 
-    @EJB(beanName="UserServiceV1")
+    @EJB(beanName = "UserServiceV2")
     private UserService userService;
 
     @Inject
     private UIUtils uiUtils;
+
+    private Result<User> userResult;
 
 
     @PostConstruct
@@ -53,7 +55,7 @@ public class UserViewV1 extends HorizontalLayout implements View
     @Override
     public void enter(ViewChangeEvent event)
     {
-        Result<User> userResult = userService.findAllUsers();
+        userResult = userService.findAllUsers();
         Label timeInterval = new Label(String.format("<h3>findAllUsers() of %d datasets needs %d [ms]</h3>", userResult.getList().size(), userResult.getTimeInterval().getEnd() - userResult.getTimeInterval().getStart()), ContentMode.HTML);
         MTable<User> userTable = uiUtils.createUserTable();
 
@@ -71,11 +73,8 @@ public class UserViewV1 extends HorizontalLayout implements View
     private void openDetailDialog(ItemClickEvent e)
     {
         Integer userId = (Integer)e.getItem().getItemProperty("id").getValue();
-        Result<Address> addressResult = userService.findAllAddresses(userId);
-        Result<Organization> organizationResult = userService.findAllOrganizations(userId);
-
-        Label addressTimeInterval = new Label(String.format("<h3>findAllAddresses() of %d datasets needs %d [ms]</h3>", addressResult.getList().size(), addressResult.getTimeInterval().getEnd() - addressResult.getTimeInterval().getStart()), ContentMode.HTML);
-        Label organizationTimeInterval = new Label(String.format("<h3>findAllOrganizations() of %d datasets needs %d [ms]</h3>", organizationResult.getList().size(), organizationResult.getTimeInterval().getEnd() - organizationResult.getTimeInterval().getStart()), ContentMode.HTML);
+        Label addressTimeInterval = new Label("<h3>Addresses are already fetched with findAllUsers()</h3>", ContentMode.HTML);
+        Label organizationTimeInterval = new Label("<h3>Organizations  are already fetched with findAllUsers()</h3>", ContentMode.HTML);
 
         Window dialog = new Window("User details");
         dialog.setModal(true);
@@ -84,10 +83,10 @@ public class UserViewV1 extends HorizontalLayout implements View
         layout.setSpacing(true);
 
         TabSheet sheet = new TabSheet();
-        MTable<Address> addressTable = uiUtils.createaddressTable(addressResult.getList());
+        MTable<Address> addressTable = uiUtils.createaddressTable(userResult.getList().stream().filter(u -> u.getId().equals(userId)).findFirst().get().getAddresses());
         sheet.addTab(new VerticalLayout(addressTimeInterval, addressTable), "Addresses");
 
-        MTable<Organization> organizationTable = uiUtils.createOrganizationTable(organizationResult.getList());
+        MTable<Organization> organizationTable = uiUtils.createOrganizationTable(userResult.getList().stream().filter(u -> u.getId().equals(userId)).findFirst().get().getOrganizations());
         sheet.addTab(new VerticalLayout(organizationTimeInterval, organizationTable), "Organizations");
 
         layout.addComponent(new Label(String.format("Details of user (birth date): %s (%s)", e.getItem().getItemProperty("name").getValue().toString(), e.getItem().getItemProperty("birthdate").getValue().toString()), ContentMode.HTML));
