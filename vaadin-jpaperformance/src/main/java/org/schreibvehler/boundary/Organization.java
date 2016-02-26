@@ -1,8 +1,8 @@
 package org.schreibvehler.boundary;
 
-import java.util.List;
+import java.util.Set;
 
 public interface Organization {
     String getName();
-    List<User> getUsers();
+    Set<User> getUsers();
 }

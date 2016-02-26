@@ -8,17 +8,17 @@
 package org.schreibvehler.boundary;
 
 
-import java.util.List;
+import java.util.*;
 
 
 public class Result<T>
 {
-    private final List<T> list;
+    private final Collection<T> list;
 
     private final TimeInterval timeInterval;
 
 
-    public Result(TimeInterval interval, List<T> list)
+    public Result(TimeInterval interval, Collection<T> list)
     {
         this.list = list;
         this.timeInterval = interval;
@@ -31,7 +31,7 @@ public class Result<T>
     }
 
 
-    public List<T> getList()
+    public Collection<T> getList()
     {
         return list;
     }

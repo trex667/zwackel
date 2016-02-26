@@ -17,9 +17,9 @@ public class UserV1 implements User {
     @Temporal(TemporalType.DATE)
     private Date birthdate;
     @OneToMany
-    private List<AddressV1> addresses;
+    private Set<AddressV1> addresses;
     @ManyToMany
-    private List<OrganizationV1> organizations;
+    private Set<OrganizationV1> organizations;
 
 
     @Override
@@ -33,13 +33,13 @@ public class UserV1 implements User {
     }
 
     @Override
-    public List<Address> getAddresses() {
-        return Collections.unmodifiableList(addresses);
+    public Set<Address> getAddresses() {
+        return Collections.unmodifiableSet(addresses);
     }
 
     @Override
-    public List<Organization> getOrganizations() {
-        return Collections.unmodifiableList(organizations);
+    public Set<Organization> getOrganizations() {
+        return Collections.unmodifiableSet(organizations);
     }
 
     @Override
@@ -59,11 +59,11 @@ public class UserV1 implements User {
         this.name = name;
     }
 
-    public void setAddresses(List<AddressV1> addresses) {
+    public void setAddresses(Set<AddressV1> addresses) {
         this.addresses = addresses;
     }
 
-    public void setOrganizations(List<OrganizationV1> organizations) {
+    public void setOrganizations(Set<OrganizationV1> organizations) {
         this.organizations = organizations;
     }
 }

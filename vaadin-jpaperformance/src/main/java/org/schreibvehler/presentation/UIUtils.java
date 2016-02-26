@@ -7,50 +7,38 @@
  */
 package org.schreibvehler.presentation;
 
+import java.util.Collection;
 
-import java.util.List;
-
-import org.schreibvehler.boundary.Address;
-import org.schreibvehler.boundary.Organization;
-import org.schreibvehler.boundary.User;
-import org.schreibvehler.boundary.UserService;
+import org.schreibvehler.boundary.*;
 import org.vaadin.viritin.fields.MTable;
 
 import com.vaadin.shared.ui.MultiSelectMode;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.Layout;
-import com.vaadin.ui.TextField;
-import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.*;
 
-
-public class UIUtils
-{
-    public MTable<User> createUserTable()
-    {
-        MTable<User> table = new MTable<>(User.class).withHeight("700px").withWidth("500px").withProperties("name", "birthdate").withColumnHeaders("name", "birth date");
+public class UIUtils {
+    public MTable<User> createUserTable() {
+        MTable<User> table = new MTable<>(User.class).withHeight("700px").withWidth("500px")
+                .withProperties("name", "birthdate").withColumnHeaders("name", "birth date");
         table.setMultiSelectMode(MultiSelectMode.SIMPLE);
         return table;
     }
 
-
-    public MTable<Address> createaddressTable(List<Address> addresses)
-    {
-        MTable<Address> table = new MTable<>(Address.class).withHeight("400px").withWidth("400px").withProperties("street", "postCode", "city", "country").withColumnHeaders("Street", "post code", "City", "Country");
+    public MTable<Address> createaddressTable(Collection<Address> addresses) {
+        MTable<Address> table = new MTable<>(Address.class).withHeight("400px").withWidth("400px")
+                .withProperties("street", "postCode", "city", "country")
+                .withColumnHeaders("Street", "post code", "City", "Country");
         table.setBeans(addresses);
         return table;
     }
 
-
-    public MTable<Organization> createOrganizationTable(List<Organization> orgs)
-    {
-        MTable<Organization> table = new MTable<>(Organization.class).withHeight("400px").withWidth("400px").withProperties("name").withColumnHeaders("Organization name");
+    public MTable<Organization> createOrganizationTable(Collection<Organization> orgs) {
+        MTable<Organization> table = new MTable<>(Organization.class).withHeight("400px").withWidth("400px")
+                .withProperties("name").withColumnHeaders("Organization name");
         table.setBeans(orgs);
         return table;
     }
 
-
-    public Layout createFieldAndButton(UserService userService, MTable<User> userTable)
-    {
+    public Layout createFieldAndButton(UserService userService, MTable<User> userTable) {
         VerticalLayout leftPart = new VerticalLayout();
         leftPart.setMargin(true);
         leftPart.setSpacing(true);

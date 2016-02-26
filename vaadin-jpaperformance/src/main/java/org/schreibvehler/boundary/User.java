@@ -8,7 +8,7 @@ public interface User {
     String getName();
     Date getBirthdate();
 
-    List<Address> getAddresses();
+    Set<Address> getAddresses();
 
-    List<Organization> getOrganizations();
+    Set<Organization> getOrganizations();
 }

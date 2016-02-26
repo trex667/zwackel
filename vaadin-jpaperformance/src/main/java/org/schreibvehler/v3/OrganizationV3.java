@@ -16,7 +16,7 @@ public class OrganizationV3 implements Organization {
 
     private String name;
     @ManyToMany
-    private List<UserV3> users;
+    private Set<UserV3> users;
 
     @Override
     public String getName() {
@@ -24,8 +24,8 @@ public class OrganizationV3 implements Organization {
     }
 
     @Override
-    public List<User> getUsers() {
-        return Collections.unmodifiableList(users);
+    public Set<User> getUsers() {
+        return Collections.unmodifiableSet(users);
     }
 
     public Integer getId() {
@@ -40,7 +40,7 @@ public class OrganizationV3 implements Organization {
         this.name = name;
     }
 
-    public void setUsers(List<UserV3> users) {
+    public void setUsers(Set<UserV3> users) {
         this.users = users;
     }
 
