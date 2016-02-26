@@ -17,6 +17,7 @@ import com.vaadin.cdi.CDIView;
 import com.vaadin.event.ItemClickEvent;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
+import com.vaadin.server.Page;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.HorizontalLayout;
@@ -47,12 +48,14 @@ public class UserViewV1 extends HorizontalLayout implements View
         setMargin(true);
         setSpacing(true);
 
+
     }
 
 
     @Override
     public void enter(ViewChangeEvent event)
     {
+        Page.getCurrent().setTitle("V1");
         Result<User> userResult = userService.findAllUsers();
         Label timeInterval = new Label(String.format("<h3>findAllUsers() of %d datasets needs %d [ms]</h3>", userResult.getList().size(), userResult.getTimeInterval().getEnd() - userResult.getTimeInterval().getStart()), ContentMode.HTML);
         MTable<User> userTable = uiUtils.createUserTable();

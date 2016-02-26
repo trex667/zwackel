@@ -8,6 +8,7 @@ import org.vaadin.viritin.layouts.MVerticalLayout;
 
 import com.vaadin.cdi.CDIView;
 import com.vaadin.navigator.*;
+import com.vaadin.server.Page;
 
 @CDIView("")
 public class AboutView extends MVerticalLayout implements View {
@@ -21,6 +22,7 @@ public class AboutView extends MVerticalLayout implements View {
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent event) {
+        Page.getCurrent().setTitle("About");
     }
 
 }

@@ -12,6 +12,7 @@ import com.vaadin.cdi.CDIView;
 import com.vaadin.event.ItemClickEvent;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
+import com.vaadin.server.Page;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.*;
 
@@ -37,6 +38,7 @@ public class UserViewV2 extends HorizontalLayout implements View {
 
     @Override
     public void enter(ViewChangeEvent event) {
+        Page.getCurrent().setTitle("V2");
         userResult = userService.findAllUsers();
         Label timeInterval = new Label(
                 String.format("<h3>findAllUsers() of %d datasets needs %d [ms]</h3>", userResult.getList().size(),
