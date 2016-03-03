@@ -25,8 +25,8 @@ public class UserServiceV4 implements UserService {
         EntityGraph<UserV4> graph = em.createEntityGraph(UserV4.class);
         graph.addAttributeNodes("addresses");
         graph.addAttributeNodes("organizations");
-        TypedQuery<User> query = em.createQuery("SELECT u FROM UserV4 u", User.class);
-        query.setHint("javax.persistence.loadgraph", graph);
+        TypedQuery<User> query = em.createQuery("SELECT DISTINCT u FROM UserV4 u", User.class);
+        query.setHint("javax.persistence.fetchgraph", graph);
 
         List<User> list = query.getResultList();
         long end = System.currentTimeMillis();

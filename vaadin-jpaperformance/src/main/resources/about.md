@@ -10,5 +10,7 @@ All versions can be reached by adding #!V[number] at the end of the URL. The vie
 All users are loaded when you enter the screen and the related addresses/organizations of the user are loaded when you open the details
 ## V2 represents a EAGER loading for addresses and organizations just by setting the corresponding attributes to EAGER
 All users, all addresses and all organizations are loaded when you enter the screen
-## V3 represents a EAGER loading for addresses and organizations by calling the size() methods of addresses and organizations
+## V3 represents a EAGER loading for addresses and organizations by setting the attributes to lazy but within a join jql query to fetch all data with one single statement
 All users, all addresses and all organizations are loaded when you enter the screen
+## V4 EAGER loading of both list attributes via entity graph
+## V5 SEMI-EAGER loading of one list attribute (addresses) via entity graph. ORganizations are loaded when you open the details

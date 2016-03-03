@@ -8,6 +8,8 @@ import org.schreibvehler.boundary.*;
 
 @Entity
 @Access(AccessType.FIELD)
+@NamedEntityGraph(name = "graph.user.all", attributeNodes = { @NamedAttributeNode(value = "addresses"),
+        @NamedAttributeNode(value = "organizations") })
 public class UserV4 implements User {
 
     @Id
@@ -16,11 +18,10 @@ public class UserV4 implements User {
     private String name;
     @Temporal(TemporalType.DATE)
     private Date birthdate;
-    @OneToMany
+    @OneToMany(mappedBy = "user")
     private Set<AddressV4> addresses;
-    @ManyToMany
+    @ManyToMany(mappedBy = "users")
     private Set<OrganizationV4> organizations;
-
 
     @Override
     public String getName() {
