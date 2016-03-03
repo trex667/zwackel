@@ -1,4 +1,4 @@
-package org.schreibvehler.v4;
+package org.schreibvehler.v5;
 
 import java.util.*;
 
@@ -8,7 +8,7 @@ import org.schreibvehler.boundary.*;
 
 @Entity
 @Access(AccessType.FIELD)
-public class UserV4 implements User {
+public class UserV5 implements User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
@@ -17,9 +17,9 @@ public class UserV4 implements User {
     @Temporal(TemporalType.DATE)
     private Date birthdate;
     @OneToMany(mappedBy = "user")
-    private Set<AddressV4> addresses;
+    private Set<AddressV5> addresses;
     @ManyToMany(mappedBy = "users")
-    private Set<OrganizationV4> organizations;
+    private Set<OrganizationV5> organizations;
 
     @Override
     public String getName() {
@@ -58,11 +58,11 @@ public class UserV4 implements User {
         this.name = name;
     }
 
-    public void setAddresses(Set<AddressV4> addresses) {
+    public void setAddresses(Set<AddressV5> addresses) {
         this.addresses = addresses;
     }
 
-    public void setOrganizations(Set<OrganizationV4> organizations) {
+    public void setOrganizations(Set<OrganizationV5> organizations) {
         this.organizations = organizations;
     }
 }
