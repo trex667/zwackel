@@ -11,7 +11,7 @@ public class AddressV1 implements Address {
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
     private Integer id;
-    
+
     private String street;
     private Integer postCode;
     private String city;
@@ -39,6 +39,7 @@ public class AddressV1 implements Address {
         return country;
     }
 
+    @Override
     public Integer getId() {
         return id;
     }

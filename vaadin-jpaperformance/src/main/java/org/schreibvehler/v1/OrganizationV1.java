@@ -44,6 +44,7 @@ public class OrganizationV1 implements Organization
     }
 
 
+    @Override
     public Integer getId()
     {
         return id;
