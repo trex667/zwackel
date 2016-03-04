@@ -9,6 +9,8 @@ import javax.persistence.*;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.schreibvehler.boundary.*;
+import org.schreibvehler.v5.OrganizationV5;
+import org.schreibvehler.v5.UserV5;
 
 @Stateless
 public class UserServiceV1 implements UserService {
@@ -44,19 +46,37 @@ public class UserServiceV1 implements UserService {
             resultList.add(user);
             entities.add(user);
         }
-        createOrganizations(entities);
+        addToOrganizations(entities);
         long end = System.currentTimeMillis();
         return new Result<User>(new TimeInterval(start, end), resultList);
     }
 
-    private void createOrganizations(Set<UserV1> users) {
-        for (int i = 0; i < 100; i++) {
+    private void addToOrganizations(Set<UserV1> users)
+    {
+        String select = "SELECT o FROM OrganizationV1 o";
+        TypedQuery<OrganizationV1> organizations = em.createQuery(select, OrganizationV1.class);
+        if (organizations.getResultList() == null || organizations.getResultList().size() == 0)
+        {
+            createOrganizations(100);
+        }
+        organizations = em.createQuery(select, OrganizationV1.class);
+        for (OrganizationV1 org : organizations.getResultList())
+        {
+            org.addUsers(users);
+            em.merge(org);
+        }
+
+    }
+
+
+    private void createOrganizations(int amount)
+    {
+        for (int i = 0; i < amount; i++)
+        {
             OrganizationV1 org = new OrganizationV1();
-            org.setUsers(users);
             org.setName(RandomStringUtils.randomAlphabetic(20));
             em.persist(org);
         }
-
     }
 
     private List<AddressV1> createAddresses(UserV1 user) {
