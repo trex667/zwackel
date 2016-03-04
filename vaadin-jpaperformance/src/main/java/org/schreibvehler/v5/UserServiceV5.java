@@ -42,7 +42,6 @@ public class UserServiceV5 implements UserService
 
         EntityGraph<UserV5> graph = em.createEntityGraph(UserV5.class);
         graph.addAttributeNodes("addresses");
-        graph.addAttributeNodes("organizations");
         TypedQuery<User> query = em.createQuery("SELECT DISTINCT u FROM UserV5 u", User.class);
         query.setHint("javax.persistence.fetchgraph", graph);
 
