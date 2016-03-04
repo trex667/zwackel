@@ -13,4 +13,5 @@ All users, all addresses and all organizations are loaded when you enter the scr
 ## V3 represents a EAGER loading for addresses and organizations by setting the attributes to lazy but within a join jql query to fetch all data with one single statement
 All users, all addresses and all organizations are loaded when you enter the screen
 ## V4 EAGER loading of both list attributes via entity graph
-## V5 SEMI-EAGER loading of one list attribute (addresses) via entity graph. ORganizations are loaded when you open the details
+## V5 SEMI-EAGER loading of one list attribute (addresses) via entity graph. Organizations are loaded when you open the details
+## V6 SEMI-EAGER loading of one list attribute (organizations) via entity graph. Addresses are loaded when you open the details
