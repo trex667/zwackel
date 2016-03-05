@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import org.schreibvehler.boundary.*;
 import org.schreibvehler.presentation.UIUtils;
 import org.vaadin.viritin.fields.MTable;
+import org.vaadin.viritin.label.RichText;
 
 import com.vaadin.cdi.CDIView;
 import com.vaadin.event.ItemClickEvent;
@@ -17,7 +18,7 @@ import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.*;
 
 @CDIView("V4")
-public class UserViewV4 extends HorizontalLayout implements View {
+public class UserViewV4 extends VerticalLayout implements View {
 
     private static final long serialVersionUID = 7277988489611347314L;
 
@@ -41,7 +42,7 @@ public class UserViewV4 extends HorizontalLayout implements View {
         Page.getCurrent().setTitle("V4");
         userResult = userService.findAllUsers();
         Label timeInterval = new Label(
-                String.format("<h3>findAllUsers() of %d datasets needs %d [ms]</h3>", userResult.getList().size(),
+                String.format("findAllUsers() of %d datasets needs %d [ms]", userResult.getList().size(),
                         userResult.getTimeInterval().getEnd() - userResult.getTimeInterval().getStart()),
                 ContentMode.HTML);
         MTable<User> userTable = uiUtils.createUserTable();
@@ -52,8 +53,9 @@ public class UserViewV4 extends HorizontalLayout implements View {
         userTable.addItemClickListener(e -> {
             openDetailDialog(e);
         });
-        addComponent(new VerticalLayout(timeInterval, userTable));
-        addComponent(leftPart);
+
+        addComponents(new RichText().withMarkDownResource("/V4.md"), timeInterval);
+        addComponents(new HorizontalLayout(userTable, leftPart));
     }
 
     private void openDetailDialog(ItemClickEvent e) {
