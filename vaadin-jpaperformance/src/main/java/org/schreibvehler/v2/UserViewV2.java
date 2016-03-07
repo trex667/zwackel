@@ -39,6 +39,7 @@ public class UserViewV2 extends VerticalLayout implements View {
 
     @Override
     public void enter(ViewChangeEvent event) {
+        removeAllComponents();
         Page.getCurrent().setTitle("V2");
         userResult = userService.findAllUsers();
         Label timeInterval = new Label(
