@@ -55,23 +55,29 @@ public class OrganizationStructureViewComplexV1 extends VerticalLayout implement
     private void createStructure(Collection<OrganizationStructureComplexV1> list) {
         if (!list.isEmpty()) {
 
-            Set<OrganizationComplexV1> facilities = new HashSet<>();
-            Iterator<OrganizationStructureComplexV1> iterator = list.stream()
-                    .filter(o -> o.getParent().getType() == OrganizationComplexV1.Type.FACILITY).iterator();
-            while (iterator.hasNext()) {
-                facilities.add(iterator.next().getParent());
-            }
-
             TreeTable treeTable = new TreeTable("Organization Structure");
             treeTable.addContainerProperty("Name", String.class, null);
             treeTable.addContainerProperty("Type", OrganizationComplexV1.Type.class, null);
             treeTable.addContainerProperty("Begin", Date.class, null);
             treeTable.addContainerProperty("End", Date.class, null);
+            Set<OrganizationComplexV1> facilities = new HashSet<>();
+
+            Iterator<OrganizationStructureComplexV1> iterator = list.stream()
+                    .filter(o -> o.getParent().getType() == OrganizationComplexV1.Type.FACILITY).iterator();
+            while (iterator.hasNext()) {
+                facilities.add(iterator.next().getParent());
+            }
             for (OrganizationComplexV1 element : facilities) {
                 treeTable.addItem(
                         new Object[] { element.getName(), element.getType(), element.getBegin(), element.getEnd() },
                         element.getId());
-                addChildLabels(element, list, treeTable);
+            }
+
+            for (OrganizationStructureComplexV1 element : list) {
+                OrganizationComplexV1 child = element.getChild();
+                treeTable.addItem(new Object[] { child.getName(), child.getType(), child.getBegin(), child.getEnd() },
+                        child.getId());
+                treeTable.setParent(child.getId(), element.getParent().getId());
             }
             addComponent(treeTable);
         }
