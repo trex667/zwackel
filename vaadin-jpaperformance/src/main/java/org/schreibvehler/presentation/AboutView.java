@@ -25,6 +25,7 @@ public class AboutView extends MVerticalLayout implements View {
         addComponent(new RichText().withMarkDownResource("/V5.md"));
         addComponent(new RichText().withMarkDownResource("/V6.md"));
         addComponent(new RichText().withMarkDownResource("/V7.md"));
+        addComponent(new RichText().withMarkDownResource("/ComplexV1.md"));
     }
 
     @Override
