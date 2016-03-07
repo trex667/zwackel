@@ -1,2 +1,2 @@
-#### ComplexV1 create a more complex organization structure
+#### OrganizationStructureView create a more complex "tree like" organization structure
 

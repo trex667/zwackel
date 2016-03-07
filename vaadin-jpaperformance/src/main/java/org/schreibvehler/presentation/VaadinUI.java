@@ -46,9 +46,6 @@ public class VaadinUI extends UI implements ViewDisplay {
         menu.addComponent(new Button("V7", e -> {
             getNavigator().navigateTo("V7");
         }));
-        menu.addComponent(new Button("ComplexV1", e -> {
-            getNavigator().navigateTo("ComplexV1");
-        }));
         menu.addComponent(new Button("OrganizationStructureView", e -> {
             getNavigator().navigateTo("OrganizationStructureView");
         }));

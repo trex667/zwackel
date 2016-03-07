@@ -6,7 +6,6 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
 import org.schreibvehler.boundary.Result;
-import org.schreibvehler.complexV1.OrganizationComplexV1.Type;
 import org.vaadin.viritin.label.RichText;
 
 import com.vaadin.cdi.CDIView;
