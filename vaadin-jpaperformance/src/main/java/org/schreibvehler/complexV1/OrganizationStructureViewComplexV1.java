@@ -45,10 +45,11 @@ public class OrganizationStructureViewComplexV1 extends VerticalLayout implement
         Result<OrganizationStructureComplexV1> orgStructureResult = orgStructureService.getCompleteStructure();
         Label timeInterval = new Label(String.format("getCompleteStructure() of %d datasets needs %d [ms]",
                                                      orgStructureResult.getList().size(),
-                                                     orgStructureResult.getTimeInterval().getEnd() - orgStructureResult.getTimeInterval().getStart()),
+                                                     orgStructureResult.getTimeInterval().getEnd() - orgStructureResult.getTimeInterval()
+                                                                                                                       .getStart()),
                                        ContentMode.HTML);
 
-        addComponents(new RichText().withMarkDownResource("/ComplexV1.md"), timeInterval);
+        addComponents(new RichText().withMarkDownResource("/OrganizationStructureComplexV1.md"), timeInterval);
 
         createStructure(orgStructureResult.getList());
     }
@@ -56,8 +57,16 @@ public class OrganizationStructureViewComplexV1 extends VerticalLayout implement
 
     private void createStructure(Collection<OrganizationStructureComplexV1> list)
     {
-        Label facility = new Label(list.stream().filter(o -> o.getParent().getType() == OrganizationComplexV1.Type.FACILITY).findFirst().get().toString());
-        addComponent(facility);
+        if (!list.isEmpty())
+        {
+            Label facility = new Label(list.stream()
+                                           .filter(o -> o.getParent().getType() == OrganizationComplexV1.Type.FACILITY)
+                                           .findFirst()
+                                           .get()
+                                           .getParent()
+                                           .toString());
+            addComponent(facility);
+        }
     }
 
 }
