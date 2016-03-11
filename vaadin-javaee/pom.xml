@@ -69,6 +69,7 @@
         </dependency>
     </dependencies>
     <build>
+    <finalName>vaadin-javaee</finalName>
         <plugins>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
