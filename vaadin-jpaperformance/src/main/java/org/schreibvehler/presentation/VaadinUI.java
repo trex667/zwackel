@@ -1,12 +1,16 @@
 package org.schreibvehler.presentation;
 
-import javax.inject.Inject;
-
-import com.vaadin.annotations.*;
-import com.vaadin.cdi.*;
-import com.vaadin.navigator.*;
+import com.vaadin.annotations.Theme;
+import com.vaadin.annotations.Title;
+import com.vaadin.cdi.CDIUI;
+import com.vaadin.cdi.CDIViewProvider;
+import com.vaadin.navigator.Navigator;
+import com.vaadin.navigator.View;
+import com.vaadin.navigator.ViewDisplay;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.ui.*;
+
+import javax.inject.Inject;
 
 @CDIUI("")
 @Theme("valo")
@@ -45,6 +49,9 @@ public class VaadinUI extends UI implements ViewDisplay {
         }));
         menu.addComponent(new Button("V7", e -> {
             getNavigator().navigateTo("V7");
+        }));
+        menu.addComponent(new Button("V8", e -> {
+            getNavigator().navigateTo("V8");
         }));
         menu.addComponent(new Button("OrganizationStructureView", e -> {
             getNavigator().navigateTo("OrganizationStructureView");

@@ -1,14 +1,14 @@
 
 package org.schreibvehler.presentation;
 
-import javax.annotation.PostConstruct;
-
+import com.vaadin.cdi.CDIView;
+import com.vaadin.navigator.View;
+import com.vaadin.navigator.ViewChangeListener;
+import com.vaadin.server.Page;
 import org.vaadin.viritin.label.RichText;
 import org.vaadin.viritin.layouts.MVerticalLayout;
 
-import com.vaadin.cdi.CDIView;
-import com.vaadin.navigator.*;
-import com.vaadin.server.Page;
+import javax.annotation.PostConstruct;
 
 @CDIView("")
 public class AboutView extends MVerticalLayout implements View {
@@ -25,6 +25,7 @@ public class AboutView extends MVerticalLayout implements View {
         addComponent(new RichText().withMarkDownResource("/V5.md"));
         addComponent(new RichText().withMarkDownResource("/V6.md"));
         addComponent(new RichText().withMarkDownResource("/V7.md"));
+        addComponent(new RichText().withMarkDownResource("/V8.md"));
         addComponent(new RichText().withMarkDownResource("/OrganizationStructureComplexV1.md"));
     }
 

@@ -1,4 +1,4 @@
-# Playground for vaadin in combination with jpa
+# Playground for vaadin and jpa
 
 This is a simple example application about creating JPA Java EE application with rich Vaadin based UI.
 
