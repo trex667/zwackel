@@ -1,6 +1,5 @@
 package org.schreibvehler.v8;
 
-
 import com.vaadin.cdi.CDIView;
 import com.vaadin.event.ItemClickEvent;
 import com.vaadin.navigator.View;
@@ -17,9 +16,6 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Inject;
 
-;
-
-
 @CDIView("V8")
 public class UserViewV8 extends VerticalLayout implements View {
 
@@ -31,58 +27,104 @@ public class UserViewV8 extends VerticalLayout implements View {
     @Inject
     private UIUtils uiUtils;
 
-    private Result<User> userResult;
-
+    private int startPosition;
+    private static final int FETCH_SIZE = 50;
 
     @PostConstruct
     public void init() {
         setMargin(true);
         setSpacing(true);
-
     }
-
 
     @Override
     public void enter(ViewChangeEvent event) {
         removeAllComponents();
-        Page.getCurrent().setTitle("V7");
-        userResult = userService.findAllUsers();
-        Label timeInterval = new Label(String.format("findAllUsers() of %d datasets needs %d [ms]",
-                userResult.getList().size(),
-                userResult.getTimeInterval().getEnd() - userResult.getTimeInterval().getStart()),
+        startPosition = 0;
+        Page.getCurrent().setTitle("V8");
+        Result<User> userResult = userService.findAllUsers();
+        Label timeInterval = new Label(
+                getHeaderText(userResult),
                 ContentMode.HTML);
         MTable<User> userTable = uiUtils.createUserTable();
 
-        Layout leftPart = uiUtils.createFieldAndButton(userService, userTable);
-
+        Layout rightPart = uiUtils.createFieldAndButton(userService, userTable);
         userTable.setBeans(userResult.getList());
+
+        Button lastPage = new Button(String.format("Show last %d users", FETCH_SIZE));
+        lastPage.setEnabled(false);
+        lastPage.addClickListener(e -> {
+            Result<User> pagingResult = userService.findAllUsers(startPosition, FETCH_SIZE);
+            timeInterval.setValue(getHeaderTextForPaging(pagingResult));
+            if (pagingResult.getList().size() > 0) {
+                userTable.setBeans(pagingResult.getList());
+            } else {
+                setEnabled(false);
+            }
+            startPosition = startPosition + FETCH_SIZE;
+        });
+
+        Button nextPage = new Button(String.format("Show next %d users", FETCH_SIZE));
+        nextPage.setEnabled(false);
+        nextPage.addClickListener(e -> {
+            Result<User> pagingResult = userService.findAllUsers(startPosition, FETCH_SIZE);
+            timeInterval.setValue(getHeaderTextForPaging(pagingResult));
+            if (pagingResult.getList().size() > 0) {
+                userTable.setBeans(pagingResult.getList());
+            } else {
+                setEnabled(false);
+            }
+            startPosition = startPosition + FETCH_SIZE;
+        });
+
+        CheckBox isPaging = new CheckBox(String.format("enable paging for table? (fetch size %d)", FETCH_SIZE), false);
+        isPaging.addValueChangeListener(e -> {
+            if (isPaging.getValue()) {
+                Result<User> pagingResult = userService.findAllUsers(startPosition, FETCH_SIZE);
+                timeInterval.setValue(getHeaderTextForPaging(pagingResult));
+                userTable.setBeans(pagingResult.getList());
+                startPosition = startPosition + FETCH_SIZE;
+                nextPage.setEnabled(true);
+            } else {
+                startPosition = 0;
+                Result<User> allUsers = userService.findAllUsers();
+                timeInterval.setValue(getHeaderText(allUsers));
+                userTable.setBeans(allUsers.getList());
+                nextPage.setEnabled(false);
+            }
+        });
+
+        rightPart.addComponents(isPaging, nextPage);
+
         userTable.addItemClickListener(e -> {
             openDetailDialog(e);
         });
 
         addComponents(new RichText().withMarkDownResource("/V8.md"), timeInterval);
-        addComponents(new HorizontalLayout(userTable, leftPart));
+        addComponents(new HorizontalLayout(userTable, rightPart));
     }
 
+    private String getHeaderText(Result<User> userResult) {
+        return String.format("findAllUsers() of %d datasets needs %d [ms]", userResult.getList().size(),
+                userResult.getTimeInterval().getEnd() - userResult.getTimeInterval().getStart());
+    }
+
+    private String getHeaderTextForPaging(Result<User> pagingResult) {
+        return String.format("findAllUsers(startPosition=%d, fetchSize=%d) need %d [ms]", startPosition, FETCH_SIZE, pagingResult.getTimeInterval().getEnd() - pagingResult.getTimeInterval().getStart());
+    }
 
     private void openDetailDialog(ItemClickEvent e) {
         Integer userId = (Integer) e.getItem().getItemProperty("id").getValue();
-
         Result<Address> addressResult = userService.findAllAddresses(userId);
         Result<Organization> organizationResult = userService.findAllOrganizations(userId);
 
-        User user = userResult.getList().stream().filter(u -> u.getId().equals(userId)).findFirst().get();
-
-        Label addressTimeInterval = new Label(String.format("<h3>findAllAddresses() of %d datasets needs %d [ms]</h3>",
-                addressResult.getList().size(),
-                addressResult.getTimeInterval().getEnd() - addressResult.getTimeInterval()
-                        .getStart()),
+        Label addressTimeInterval = new Label(
+                String.format("<h3>findAllAddresses() of %d datasets needs %d [ms]</h3>",
+                        addressResult.getList().size(),
+                        addressResult.getTimeInterval().getEnd() - addressResult.getTimeInterval().getStart()),
                 ContentMode.HTML);
-        Label organizationTimeInterval = new Label(String.format("<h3>findAllOrganizations() of %d datasets needs %d [ms]</h3>",
-                organizationResult.getList().size(),
-                organizationResult.getTimeInterval().getEnd() - organizationResult
-                        .getTimeInterval()
-                        .getStart()),
+        Label organizationTimeInterval = new Label(String.format(
+                "<h3>findAllOrganizations() of %d datasets needs %d [ms]</h3>", organizationResult.getList().size(),
+                organizationResult.getTimeInterval().getEnd() - organizationResult.getTimeInterval().getStart()),
                 ContentMode.HTML);
 
         Window dialog = new Window("User details");

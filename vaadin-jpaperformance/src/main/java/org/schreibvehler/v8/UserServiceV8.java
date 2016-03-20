@@ -1,6 +1,5 @@
 package org.schreibvehler.v8;
 
-
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.schreibvehler.boundary.*;
@@ -8,11 +7,9 @@ import org.schreibvehler.boundary.*;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.util.*;
 import java.util.logging.Logger;
-
 
 @Stateless
 public class UserServiceV8 implements UserService {
@@ -22,16 +19,31 @@ public class UserServiceV8 implements UserService {
     @PersistenceContext
     private EntityManager em;
 
-
     @Override
     public Result<User> findAllUsers() {
+        return findAllUsers(null, null);
+    }
+
+    @Override
+    public Result<User> findAllUsers(Integer startPosition, Integer fetchSize) {
         long start = System.currentTimeMillis();
-        Query query = em.createNativeQuery("SELECT DISTINCT u.*, a.*, o.* FROM USERV8 u, AddressV8 a, OrganizationV8 o, ORGANIZATIONV8_USERV8 ou WHERE u.id = a.user_id AND u.id = ou.users_id AND o.id = ou.organizations_id", UserV8.class);
+        TypedQuery<User> query = em.createQuery("SELECT u FROM UserV8 u", User.class);
+        if (isPaging(startPosition, fetchSize)) {
+            query.setFirstResult(startPosition);
+            query.setMaxResults(fetchSize);
+        }
+
         List<User> list = query.getResultList();
         long end = System.currentTimeMillis();
         return new Result<User>(new TimeInterval(start, end), list);
     }
 
+    boolean isPaging(Integer startPosition, Integer fetchSize) {
+        if (startPosition == null || fetchSize == null || startPosition < 0 || fetchSize <= 1) {
+            return false;
+        }
+        return true;
+    }
 
     @Override
     public Result<User> createTestData(int count) {
@@ -41,7 +53,8 @@ public class UserServiceV8 implements UserService {
         for (int i = 0; i < count; i++) {
             UserV8 user = new UserV8();
             user.setName(RandomStringUtils.randomAlphabetic(20));
-            user.setBirthdate(DateUtils.addYears(new Date(), Integer.parseInt(RandomStringUtils.random(2, "123456789")) * -1));
+            user.setBirthdate(
+                    DateUtils.addYears(new Date(), Integer.parseInt(RandomStringUtils.random(2, "123456789")) * -1));
             em.persist(user);
 
             createAddresses(user);
@@ -52,7 +65,6 @@ public class UserServiceV8 implements UserService {
         long end = System.currentTimeMillis();
         return new Result<User>(new TimeInterval(start, end), resultList);
     }
-
 
     private void addToOrganizations(Set<UserV8> users) {
         String select = "SELECT o FROM OrganizationV8 o";
@@ -77,7 +89,6 @@ public class UserServiceV8 implements UserService {
         }
     }
 
-
     private List<AddressV8> createAddresses(UserV8 user) {
         List<AddressV8> result = new ArrayList<>();
 
@@ -94,11 +105,10 @@ public class UserServiceV8 implements UserService {
         return result;
     }
 
-
     @Override
     public Result<Address> findAllAddresses(Integer userId) {
         long start = System.currentTimeMillis();
-        Query query = em.createNativeQuery("SELECT * FROM AddressV8 WHERE user_id=:userid", AddressV8.class);
+        TypedQuery<Address> query = em.createQuery("SELECT a FROM AddressV8 a WHERE a.user.id=:userid", Address.class);
         query.setParameter("userid", userId);
 
         List<Address> resultList = query.getResultList();
@@ -106,13 +116,12 @@ public class UserServiceV8 implements UserService {
         return new Result<Address>(new TimeInterval(start, end), resultList);
     }
 
-
     @Override
     public Result<Organization> findAllOrganizations(Integer userId) {
         long start = System.currentTimeMillis();
-        Query query = em.createNativeQuery("SELECT org.* FROM OrganizationV8 org LEFT OUTER JOIN ORGANIZATIONV8_USERV8 org_user ON org.id = org_user.organizations_id  WHERE org_user.users_id = :user",
-                OrganizationV8.class);
-        query.setParameter("user", userId);
+        TypedQuery<Organization> query = em.createQuery("SELECT o FROM OrganizationV8 o WHERE :user MEMBER OF o.users",
+                Organization.class);
+        query.setParameter("user", em.find(UserV8.class, userId));
 
         List<Organization> resultList = query.getResultList();
         long end = System.currentTimeMillis();
