@@ -53,27 +53,38 @@ public class UserViewV8 extends VerticalLayout implements View {
         Button lastPage = new Button(String.format("Show last %d users", FETCH_SIZE));
         lastPage.setEnabled(false);
         lastPage.addClickListener(e -> {
+            if (startPosition - FETCH_SIZE >= 0) {
+                startPosition = startPosition - FETCH_SIZE;
+            } else {
+                startPosition = 0;
+            }
             Result<User> pagingResult = userService.findAllUsers(startPosition, FETCH_SIZE);
-            timeInterval.setValue(getHeaderTextForPaging(pagingResult));
             if (pagingResult.getList().size() > 0) {
                 userTable.setBeans(pagingResult.getList());
-            } else {
+                timeInterval.setValue(getHeaderTextForPaging(pagingResult));
+            }
+            if (startPosition == 0) {
                 setEnabled(false);
             }
-            startPosition = startPosition + FETCH_SIZE;
         });
 
         Button nextPage = new Button(String.format("Show next %d users", FETCH_SIZE));
         nextPage.setEnabled(false);
         nextPage.addClickListener(e -> {
             Result<User> pagingResult = userService.findAllUsers(startPosition, FETCH_SIZE);
-            timeInterval.setValue(getHeaderTextForPaging(pagingResult));
             if (pagingResult.getList().size() > 0) {
                 userTable.setBeans(pagingResult.getList());
+                timeInterval.setValue(getHeaderTextForPaging(pagingResult));
+                if (pagingResult.getList().size() < FETCH_SIZE) {
+                    setEnabled(false);
+                }
             } else {
                 setEnabled(false);
             }
             startPosition = startPosition + FETCH_SIZE;
+            if (startPosition > 0) {
+                lastPage.setEnabled(true);
+            }
         });
 
         CheckBox isPaging = new CheckBox(String.format("enable paging for table? (fetch size %d)", FETCH_SIZE), false);
@@ -82,18 +93,23 @@ public class UserViewV8 extends VerticalLayout implements View {
                 Result<User> pagingResult = userService.findAllUsers(startPosition, FETCH_SIZE);
                 timeInterval.setValue(getHeaderTextForPaging(pagingResult));
                 userTable.setBeans(pagingResult.getList());
-                startPosition = startPosition + FETCH_SIZE;
+                if (startPosition > 0) {
+                    lastPage.setEnabled(true);
+                }
                 nextPage.setEnabled(true);
+                startPosition = startPosition + FETCH_SIZE;
             } else {
                 startPosition = 0;
                 Result<User> allUsers = userService.findAllUsers();
                 timeInterval.setValue(getHeaderText(allUsers));
                 userTable.setBeans(allUsers.getList());
                 nextPage.setEnabled(false);
+                lastPage.setEnabled(false);
             }
         });
 
-        rightPart.addComponents(isPaging, nextPage);
+
+        rightPart.addComponents(isPaging, new HorizontalLayout(lastPage, nextPage));
 
         userTable.addItemClickListener(e -> {
             openDetailDialog(e);
