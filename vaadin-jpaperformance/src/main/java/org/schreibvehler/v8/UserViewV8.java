@@ -52,6 +52,25 @@ public class UserViewV8 extends VerticalLayout implements View {
 
         Button lastPage = new Button(String.format("Show last %d users", FETCH_SIZE));
         lastPage.setEnabled(false);
+        Button nextPage = new Button(String.format("Show next %d users", FETCH_SIZE));
+        nextPage.setEnabled(false);
+        nextPage.addClickListener(e -> {
+            Result<User> pagingResult = userService.findAllUsers(startPosition, FETCH_SIZE);
+            if (pagingResult.getList().size() > 0) {
+                userTable.setBeans(pagingResult.getList());
+                timeInterval.setValue(getHeaderTextForPaging(pagingResult));
+                if (pagingResult.getList().size() < FETCH_SIZE) {
+                    nextPage.setEnabled(false);
+                }
+                startPosition = startPosition + FETCH_SIZE;
+            } else {
+                nextPage.setEnabled(false);
+            }
+            if (startPosition > 0) {
+                lastPage.setEnabled(true);
+            }
+        });
+
         lastPage.addClickListener(e -> {
             if (startPosition - FETCH_SIZE >= 0) {
                 startPosition = startPosition - FETCH_SIZE;
@@ -62,30 +81,14 @@ public class UserViewV8 extends VerticalLayout implements View {
             if (pagingResult.getList().size() > 0) {
                 userTable.setBeans(pagingResult.getList());
                 timeInterval.setValue(getHeaderTextForPaging(pagingResult));
+                nextPage.setEnabled(true);
             }
             if (startPosition == 0) {
-                setEnabled(false);
+                lastPage.setEnabled(false);
+                nextPage.setEnabled(true);
             }
         });
 
-        Button nextPage = new Button(String.format("Show next %d users", FETCH_SIZE));
-        nextPage.setEnabled(false);
-        nextPage.addClickListener(e -> {
-            Result<User> pagingResult = userService.findAllUsers(startPosition, FETCH_SIZE);
-            if (pagingResult.getList().size() > 0) {
-                userTable.setBeans(pagingResult.getList());
-                timeInterval.setValue(getHeaderTextForPaging(pagingResult));
-                if (pagingResult.getList().size() < FETCH_SIZE) {
-                    setEnabled(false);
-                }
-            } else {
-                setEnabled(false);
-            }
-            startPosition = startPosition + FETCH_SIZE;
-            if (startPosition > 0) {
-                lastPage.setEnabled(true);
-            }
-        });
 
         CheckBox isPaging = new CheckBox(String.format("enable paging for table? (fetch size %d)", FETCH_SIZE), false);
         isPaging.addValueChangeListener(e -> {
