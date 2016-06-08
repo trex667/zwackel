@@ -4,8 +4,9 @@
     <connection-url>jdbc:h2:~/h2/jpaperformance;AUTO_SERVER=TRUE</connection-url>
     <driver>h2</driver>
     <security>
-      <user-name>zwackel</user-name>
-      <password>z</password>
+      <!--<user-name>zwackel</user-name>
+      <password>z</password>-->
+      <security-domain>ds-encrypted</security-domain>
     </security>
   </datasource>
 </datasources>
