@@ -1,0 +1,8 @@
+{
+  "realm": "oaf",
+  "realm-public-key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAowhraZrQmmoLsgETMrWc+qkVYd+zMyABIdxPI+KznxalcBJ/NPuWQaYGBDypj4wM4HaOQlBQLf3d0GyGfWU0QyWIgfPCwN+kNISt5Ehx/FM3MHc55UMytmMfhNX/2dcZaaWAQqXJMB+vsgos8KtpsPxVIjOa23+L5Y7s4y5TcO0ZQVOWImV0SIXyb4+dWGBW3xRGTLDjf8ZD4E7TzFosZZgJkAfX06FCJ/+AlKAxSmd3HB4RPIH+VUKYU5Jlwa90LCUAJVkoLkJNobj9S1mRYGBLNCZ8IU6Y9Hbtvzu72VNtzCoUJaiUVyLYnU2V57Cvuhu8aFkOReT2ZsBAKiEBFQIDAQAB",
+  "bearer-only": true,
+  "auth-server-url": "http://localhost:8180/auth",
+  "ssl-required": "external",
+  "resource": "dummy"
+}
