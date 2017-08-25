@@ -17,4 +17,5 @@ buildNumber.properties
 #backup files
 *~
 
-
+#npm & co
+**/node_modules/
