@@ -1,5 +1,6 @@
 import {Injectable} from "@angular/core";
 import {Http} from "@angular/http";
+import { Observable } from 'rxjs/Observable';
 import "rxjs/add/operator/toPromise";
 import "rxjs/add/operator/map";
 
@@ -15,18 +16,23 @@ export class WeatherService {
     return "********************** WeatherService Info *********************";
   }
 
-  getWeather(): Promise<string> {
+  getWeather(): Observable<string> {
     return this.http.get(this.openWeatherUrl)
-      .toPromise()
-      .then(response => response.json().data as string)
-      .catch(this.handleError);
+      //.toPromise()
+      .map(response => this.extractData(response));
+      //.catch(this.handleError);
       // .map(res => res.json());
       // .subscribe()
 
   }
 
-  private handleError(error: any): Promise<any> {
+private extractData(res: any) {
+    let body = res.json();
+    return JSON.stringify(body);
+  }
+
+  private handleError(error: any) {
     console.error('An error occurred', error);
-    return Promise.reject(error.message || error);
+    return Observable.throw(error.message);
   }
 }

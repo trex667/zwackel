@@ -10,13 +10,16 @@ import {WeatherService} from "./weather.service";
 export class AppComponent {
 
   title = 'weather app';
-  data : string;
+  data: string;
+  errorMessage: string;
 
   // private weatherService :WeatherService;
 
   constructor(private weatherService :WeatherService){
     // json = weatherService.getWeather();
-    weatherService.getWeather().then(res => this.data);
+    weatherService.getWeather().subscribe(data => {this.data = data},
+                    error =>  this.errorMessage = <any>error,
+     );
     console.log("Huhu: " + this.data);
   }
 
