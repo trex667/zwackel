@@ -7,7 +7,8 @@ import "rxjs/add/operator/map";
 @Injectable()
 export class WeatherService {
 
-  private openWeatherUrl = "http://api.openweathermap.org/data/2.5/forecast?APPID=a59c9a186c9eddca27a2f6f157d45275&q=trier,de&mode=json";
+  private API_ID = "a59c9a186c9eddca27a2f6f157d45275";
+  private openWeatherUrl = "http://api.openweathermap.org/data/2.5/forecast?units=metric&appid=" + this.API_ID;
 
   constructor(private http: Http) {
   }
@@ -17,7 +18,7 @@ export class WeatherService {
   }
 
   getWeather(): Observable<string> {
-    return this.http.get(this.openWeatherUrl)
+    return this.http.get(this.openWeatherUrl + "&q=trier,de")
       //.toPromise()
       .map(response => this.extractData(response));
       //.catch(this.handleError);
