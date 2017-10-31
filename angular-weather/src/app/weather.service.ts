@@ -3,6 +3,7 @@ import {Http} from "@angular/http";
 import { Observable } from 'rxjs/Observable';
 import "rxjs/add/operator/toPromise";
 import "rxjs/add/operator/map";
+import {Weather} from "./weather";
 
 @Injectable()
 export class WeatherService {
@@ -20,20 +21,47 @@ export class WeatherService {
   getWeather(): Observable<string> {
     return this.http.get(this.openWeatherUrl + "&q=trier,de")
       //.toPromise()
-      .map(response => this.extractData(response));
+      .map(response => this.stringifyData(response));
       //.catch(this.handleError);
       // .map(res => res.json());
       // .subscribe()
 
   }
 
-private extractData(res: any) {
+private stringifyData(res: any) {
     let body = res.json();
     return JSON.stringify(body);
   }
 
-  private handleError(error: any) {
-    console.error('An error occurred', error);
-    return Observable.throw(error.message);
+  // getWeatheritemsbyCity(cityName): Observable<any>{
+  //
+  //   return this.http.get( this.openWeatherUrl + "&q=" + cityName + ",de")
+  //     .map(response => response.json())
+  //     .catch(this.handleError);
+  // }
+
+  getWeatherForecast(cityName): Observable<any[]>{
+
+    return this.http.get(this.openWeatherUrl +'&q='+ cityName + + ",de")
+      .map(response => this.extractData(cityName, response));
+      // .catch(this.handleError);
+  }
+
+  private extractData(cityName: string, res: any) {
+    let body = res.json();
+    let weather = [];
+    for(let element of body.list){
+      console.log(element);
+      weather.push(new Weather(cityName, element.main.temp, element.dt_txt))
+
+    }
+    return weather || { };
+  }
+
+  private handleError (error: any) {
+    let errMsg: string;
+    errMsg = error.message ? error.message : error.toString();
+    console.error(errMsg);
+    return Observable.throw(errMsg);
   }
 }
