@@ -1,9 +1,9 @@
 import {Injectable} from "@angular/core";
 import {Http} from "@angular/http";
-import { Observable } from 'rxjs/Observable';
+import {Observable} from 'rxjs/Observable';
 import "rxjs/add/operator/toPromise";
 import "rxjs/add/operator/map";
-import {Weather} from "./weather";
+import {Weather} from "../weather";
 
 @Injectable()
 export class WeatherService {
@@ -14,37 +14,10 @@ export class WeatherService {
   constructor(private http: Http) {
   }
 
-  getInfo(): String {
-    return "********************** WeatherService Info *********************";
-  }
 
-  getWeather(): Observable<string> {
-    return this.http.get(this.openWeatherUrl + "&q=trier,de")
-      //.toPromise()
-      .map(response => this.stringifyData(response));
-      //.catch(this.handleError);
-      // .map(res => res.json());
-      // .subscribe()
-
-  }
-
-private stringifyData(res: any) {
-    let body = res.json();
-    return JSON.stringify(body);
-  }
-
-  // getWeatheritemsbyCity(cityName): Observable<any>{
-  //
-  //   return this.http.get( this.openWeatherUrl + "&q=" + cityName + ",de")
-  //     .map(response => response.json())
-  //     .catch(this.handleError);
-  // }
-
-  getWeatherForecast(cityName): Observable<any[]>{
-
-    return this.http.get(this.openWeatherUrl +'&q='+ cityName + + ",de")
+  public getWeatherForecast(cityName): Observable<Weather[]>{
+    return this.http.get(this.openWeatherUrl +'&q='+ cityName)
       .map(response => this.extractData(cityName, response));
-      // .catch(this.handleError);
   }
 
   private extractData(cityName: string, res: any) {
